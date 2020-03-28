@@ -8,7 +8,7 @@ namespace StorkShipping
 {
     public partial class AnaSayfa : Form
     {
-        // Global Değişkenler (mehmet ali erol)
+        // Global Değişkenler 
 
         readonly string[] SehirAd = { " ","Adana", "Adıyaman", "Afyon", "Ağrı", "Amasya", "Ankara", "Antalya", "Artvin", "Aydın",
             "Balıkesir", "Bilecik", "Bingöl", "Bitlis", "Bolu", "Burdur", "Bursa", "Çanakkale", "Çankırı", "Çorum", "Denizli",
