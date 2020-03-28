@@ -471,7 +471,7 @@ namespace StorkShipping
             Tur = 1;
             if (HedefAdres[0] != 0)
             {
-                            
+             // DENEMEE               
                 for (int i = 0; i < Round ; i++)
                 {
                      EnkisaYoluBul(KaynakAdres[i]-1, HedefAdres[i] - 1, 81, graf, 1);
