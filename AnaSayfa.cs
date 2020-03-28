@@ -176,10 +176,7 @@ namespace StorkShipping
                         }
                     }
                 }
-                hedefKontrol[kontrolTut] = true;
-               
-
-              
+                hedefKontrol[kontrolTut] = true;                           
             }
         }
         public void YazdirVeEkle(List<int> yol, int[,] graf)
@@ -386,8 +383,7 @@ namespace StorkShipping
         }
  
         private void Hesapla(object sender, EventArgs e)
-{
-           
+{         
             toplamYol = 0;
             int[,] graf =
     {
@@ -477,8 +473,7 @@ namespace StorkShipping
            FormSifirla();
             Tur = 1;
             if (HedefAdres[0] != 0)
-            {
-             // DENEMEE               
+            {                 
                 for (int i = 0; i < Round ; i++)
                 {
                    
@@ -487,7 +482,6 @@ namespace StorkShipping
                     EnkisaYoluBul(KaynakAdres[i]-1, AnlikHedef-1 , 81, graf, 0);
 
                 }
-
             }
             else
             {
