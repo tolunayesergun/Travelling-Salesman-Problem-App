@@ -1,0 +1,9 @@
+D:\C# Projects\StorkShipping\obj\Debug\StorkShipping.csprojAssemblyReference.cache
+D:\C# Projects\StorkShipping\obj\Debug\StorkShipping.Properties.Resources.resources
+D:\C# Projects\StorkShipping\obj\Debug\StorkShipping.csproj.GenerateResource.cache
+D:\C# Projects\StorkShipping\bin\Debug\StorkShipping.exe.config
+D:\C# Projects\StorkShipping\bin\Debug\StorkShipping.exe
+D:\C# Projects\StorkShipping\bin\Debug\StorkShipping.pdb
+D:\C# Projects\StorkShipping\obj\Debug\StorkShipping.exe
+D:\C# Projects\StorkShipping\obj\Debug\StorkShipping.pdb
+D:\C# Projects\StorkShipping\obj\Debug\StorkShipping.AnaSayfa.resources
