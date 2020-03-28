@@ -25,7 +25,6 @@ namespace StorkShipping
         int toplamYol = 0;
         int AnlikHedef = 0;
         int Tur;
-        
         int Round = 0;
       
         //------------------------------ 
@@ -138,23 +137,30 @@ namespace StorkShipping
                 KaynakAdres[Tur] = AnlikHedef;
                 Tur++;
                 YazdirVeEkle(yol.ToList(), graf);
-              
+                
             }
             else 
             {
                 int Tempkontrol = AnlikHedef;
                 int kontrolTut=0;
-              
                 
-              
-                     
+                for(int i=0;i<Round;i++)
+                { 
+                if(hedefKontrol[i]==false)
+                    {
+                        AnlikHedef = HedefAdres[i];
+                    }
+                }
+               
+
                 for (int i = 0; i < Round; i++)
                 {
-                    if (uzaklik[HedefAdres[i]-1] < uzaklik[AnlikHedef-1] && hedefKontrol[i]==false)
+               
+                    if (uzaklik[HedefAdres[i]-1] <= uzaklik[AnlikHedef-1] && hedefKontrol[i]==false)
                     {
                         AnlikHedef = HedefAdres[i];
                         kontrolTut = i;
-                        MessageBox.Show("GİRDİ");
+                      
                     }       
                 }
 
@@ -171,8 +177,9 @@ namespace StorkShipping
                     }
                 }
                 hedefKontrol[kontrolTut] = true;
-             
+               
 
+              
             }
         }
         public void YazdirVeEkle(List<int> yol, int[,] graf)
@@ -380,7 +387,7 @@ namespace StorkShipping
  
         private void Hesapla(object sender, EventArgs e)
 {
-            AnlikHedef=HedefAdres[0];
+           
             toplamYol = 0;
             int[,] graf =
     {
@@ -474,8 +481,11 @@ namespace StorkShipping
              // DENEMEE               
                 for (int i = 0; i < Round ; i++)
                 {
-                     EnkisaYoluBul(KaynakAdres[i]-1, HedefAdres[i] - 1, 81, graf, 1);
-                     EnkisaYoluBul(KaynakAdres[i]-1, AnlikHedef-1 , 81, graf, 0);
+                   
+                    EnkisaYoluBul(KaynakAdres[i]-1, HedefAdres[i] - 1, 81, graf, 1);
+
+                    EnkisaYoluBul(KaynakAdres[i]-1, AnlikHedef-1 , 81, graf, 0);
+
                 }
 
             }
