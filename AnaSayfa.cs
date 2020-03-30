@@ -9,16 +9,14 @@ namespace StorkShipping
     public partial class AnaSayfa : Form
     {
         // Global Değişkenler 
-        
+
         readonly Bitmap cizimAlani;
         readonly int[] HedefAdres = new int[10];
-        readonly int[] KaynakAdres = new int[11];
         readonly bool[] hedefKontrol = new bool[10];
         int toplamYol = 0;
-        int AnlikHedef = 0;
         int Tur;
         int Round = 0;
-      
+
         //------------------------------ 
 
         public AnaSayfa()
@@ -30,20 +28,20 @@ namespace StorkShipping
         public void CizimYap(int[] adresler)
         {
 
-         
+
 
             Pen Kalem = new Pen(System.Drawing.Color.Red, 5);
             Graphics grafik;
             grafik = Graphics.FromImage(cizimAlani);
-      
+
             for (int i = 0; i < adresler.Length - 1; i++)
             {
-                
-             grafik.DrawLine(Kalem, (Controls["button" + (adresler[i]+1)] as Button).Location.X+15, (Controls["button" + (adresler[i]+1)] as Button).Location.Y + 15,
-                  (Controls["button" + (adresler[i+1]+1)] as Button).Location.X + 15, (Controls["button" + (adresler[i+1]+1)] as Button).Location.Y + 15);
-        
+
+                grafik.DrawLine(Kalem, (Controls["button" + (adresler[i] + 1)] as Button).Location.X + 15, (Controls["button" + (adresler[i] + 1)] as Button).Location.Y + 15,
+                     (Controls["button" + (adresler[i + 1] + 1)] as Button).Location.X + 15, (Controls["button" + (adresler[i + 1] + 1)] as Button).Location.Y + 15);
+
             }
-           
+
             pictureBox1.Image = cizimAlani;
             grafik.Dispose();
         }
@@ -57,8 +55,7 @@ namespace StorkShipping
             Refresh();
             listBox2.Items.Clear();
             toplamYol = 0;
-            KaynakAdres[0] = 41;
-            AnlikHedef = 0;
+
             Tur = 1;
             for (int i = 0; i < hedefKontrol.Length; i++)
             {
@@ -66,130 +63,144 @@ namespace StorkShipping
             }
 
         }
-        public void EnkisaYoluBul(int baslangic, int hedef, int matrisBoyut, int[,] graf,int islemTipi)
+        public void EnkisaYoluBul(int[,] graf)
         {
-            LinkedList<int> yol = new LinkedList<int>();
-            int? dugum = hedef;
-            int[] uzaklik = new int[matrisBoyut];
-            bool[] gezmeKontrol = new bool[matrisBoyut];
-            int?[] oncekiDugum = new int?[matrisBoyut];
+            int[] KaynakAdres = new int[11];
+            int matrisBoyut = 81;
+            int islemTipi = 1;
+            int hedef;
+            int AnlikHedef = 0;
+            KaynakAdres[0] = 41;
+
+           for (int per = 0; per < Round; per++)
+           {
+               islemYap:
+                int baslangic = KaynakAdres[per] - 1;
+                if (islemTipi == 1) hedef = HedefAdres[per] - 1;
+                else hedef = AnlikHedef - 1;
+                LinkedList<int> yol = new LinkedList<int>();
+                int? dugum = hedef;
+                int[] uzaklik = new int[matrisBoyut];
+                bool[] gezmeKontrol = new bool[matrisBoyut];
+                int?[] oncekiDugum = new int?[matrisBoyut];
+
+               for (int i = 0; i < matrisBoyut; i++)
+               {
+                    uzaklik[i] = int.MaxValue;
+               }
+
+                uzaklik[baslangic] = 0;
+
+               while (true)
+               {
+                    int enYakinDugum = 0;
+                    int enAzUzaklik = int.MaxValue;
+                    int enYakinDugumeOlanUzaklik;
+                    int sonrakiDugumeOlanUzaklik;
+                    int toplamUzaklik;
 
 
-            for (int i = 0; i < matrisBoyut; i++)
-            {
-
-                uzaklik[i] = int.MaxValue;
-
-            }         
-          
-            uzaklik[baslangic] = 0;
-          
-
-            while (true)
-            {
-                int enYakinDugum = 0;
-                int enAzUzaklik = int.MaxValue;
-                int enYakinDugumeOlanUzaklik;
-                int sonrakiDugumeOlanUzaklik;
-                int toplamUzaklik;
-
-
-                for (int i = 0; i < matrisBoyut; i++)
-                {
-                    if (gezmeKontrol[i] == false && enAzUzaklik > uzaklik[i])
+                    for (int i = 0; i < matrisBoyut; i++)
                     {
-                        enYakinDugum = i;
-                        enAzUzaklik = uzaklik[i];
-                    }
-                }
-
-                if (enAzUzaklik == int.MaxValue)break;
-                gezmeKontrol[enYakinDugum] = true;
-
-                for (int i = 0; i < matrisBoyut; i++)
-                {
-                    if (graf[enYakinDugum, i] > 0)
-                    {                    
-                        sonrakiDugumeOlanUzaklik = graf[enYakinDugum, i];
-                        enYakinDugumeOlanUzaklik = uzaklik[enYakinDugum];
-                        toplamUzaklik = enYakinDugumeOlanUzaklik + sonrakiDugumeOlanUzaklik;
-
-                        if (toplamUzaklik < uzaklik[i])
+                        if (gezmeKontrol[i] == false && enAzUzaklik > uzaklik[i])
                         {
-                            uzaklik[i] = toplamUzaklik;
-                            oncekiDugum[i] = enYakinDugum;
+                            enYakinDugum = i;
+                            enAzUzaklik = uzaklik[i];
                         }
                     }
-                }
-            }
-            if (islemTipi == 0)
-            {
-                while (dugum != null)
-            {
-                yol.AddFirst(dugum.Value);
-                dugum = oncekiDugum[dugum.Value];
-            }
-                KaynakAdres[Tur] = AnlikHedef;
-                Tur++;
-                YazdirVeEkle(yol.ToList(), graf);
-                
-            }
-            else 
-            {
-                int Tempkontrol = AnlikHedef;
-                int kontrolTut=0;
-                
-                for(int i=0;i<Round;i++)
-                { 
-                if(hedefKontrol[i]==false)
-                    {
-                        AnlikHedef = HedefAdres[i];
-                    }
-                }
-               
 
-                for (int i = 0; i < Round; i++)
-                {
-               
-                    if (uzaklik[HedefAdres[i]-1] <= uzaklik[AnlikHedef-1] && hedefKontrol[i]==false)
-                    {
-                        AnlikHedef = HedefAdres[i];
-                        kontrolTut = i;
-                      
-                    }       
-                }
+                    if (enAzUzaklik == int.MaxValue) break;
+                    gezmeKontrol[enYakinDugum] = true;
 
-                if(Tempkontrol==AnlikHedef)
-                {
-                    for (int j = 0; j < Round; j++)
+                    for (int i = 0; i < matrisBoyut; i++)
                     {
-                        if (hedefKontrol[j] == false)
+                        if (graf[enYakinDugum, i] > 0)
                         {
-                            AnlikHedef = HedefAdres[j];
-                            kontrolTut = j;
-                            
+                            sonrakiDugumeOlanUzaklik = graf[enYakinDugum, i];
+                            enYakinDugumeOlanUzaklik = uzaklik[enYakinDugum];
+                            toplamUzaklik = enYakinDugumeOlanUzaklik + sonrakiDugumeOlanUzaklik;
+
+                            if (toplamUzaklik < uzaklik[i])
+                            {
+                                uzaklik[i] = toplamUzaklik;
+                                oncekiDugum[i] = enYakinDugum;
+                            }
                         }
                     }
+               }
+                if (islemTipi == 0)
+                {
+                    while (dugum != null)
+                    {
+                        yol.AddFirst(dugum.Value);
+                        dugum = oncekiDugum[dugum.Value];
+                    }
+
+                    KaynakAdres[Tur] = AnlikHedef;
+                    Tur++;
+                    YazdirVeEkle(yol.ToList(), graf, KaynakAdres);
+                    islemTipi = 1;
+
                 }
-                hedefKontrol[kontrolTut] = true;                           
-            }
+                else
+                {
+                    int Tempkontrol = AnlikHedef;
+                    int kontrolTut = 0;
+
+                    for (int i = 0; i < Round; i++)
+                    {
+                        if (hedefKontrol[i] == false)
+                        {
+                            AnlikHedef = HedefAdres[i];
+                        }
+                    }
+
+
+                    for (int i = 0; i < Round; i++)
+                    {
+
+                        if (uzaklik[HedefAdres[i] - 1] <= uzaklik[AnlikHedef - 1] && hedefKontrol[i] == false)
+                        {
+                            AnlikHedef = HedefAdres[i];
+                            kontrolTut = i;
+
+                        }
+                    }
+
+                    if (Tempkontrol == AnlikHedef)
+                    {
+                        for (int j = 0; j < Round; j++)
+                        {
+                            if (hedefKontrol[j] == false)
+                            {
+                                AnlikHedef = HedefAdres[j];
+                                kontrolTut = j;
+
+                            }
+                        }
+                    }
+                    hedefKontrol[kontrolTut] = true;
+                    islemTipi = 0;
+                    goto islemYap;
+                }
+           }
         }
-        public void YazdirVeEkle(List<int> yol, int[,] graf)
-        {        
+        public void YazdirVeEkle(List<int> yol, int[,] graf, int[] KaynakAdres)
+        {
             int[] indisDizi = new int[yol.Count];
-            indisDizi[0]= KaynakAdres[Tur-2]-1;
-            if(Tur==2) listBox2.Items.Add("1) Kocaeli [ 41 ]");
+            indisDizi[0] = KaynakAdres[Tur - 2] - 1;
+            if (Tur == 2) listBox2.Items.Add("1) Kocaeli [ 41 ]");
 
             for (int i = 1; i < yol.Count; i++)
             {
                 indisDizi[i] = yol[i];
                 toplamYol += graf[yol[i - 1], yol[i]];
-                listBox2.Items.Add((i+1) + ") " + Sehirler.SehirAd[yol[i] + 1] + " [ " +Convert.ToString(yol[i] + 1)+" ]");               
-            }   
-            
-            label7.Text = Convert.ToString(toplamYol)+" KM";
+                listBox2.Items.Add((i + 1) + ") " + Sehirler.SehirAd[yol[i] + 1] + " [ " + Convert.ToString(yol[i] + 1) + " ]");
+            }
+
+            label7.Text = Convert.ToString(toplamYol) + " KM";
             label6.Text = listBox2.Items.Count.ToString();
-            CizimYap(indisDizi);                   
+            CizimYap(indisDizi);
         }
         private void Btn_Click(object sender, EventArgs e)
         {
@@ -202,12 +213,12 @@ namespace StorkShipping
                     MessageBox.Show("En Fazla 10 Şehir Seçebilirsiniz");
                 }
                 else
-                { 
-                clickedButton.BackColor = System.Drawing.SystemColors.MenuHighlight;
-                clickedButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;             
-                HedefAdres[Round] = Convert.ToInt32(clickedButton.Text);                                                       
-                listBox1.Items.Add(HedefAdres[Round] + " - " + Sehirler.SehirAd[HedefAdres[Round]]);
-                Round++;
+                {
+                    clickedButton.BackColor = System.Drawing.SystemColors.MenuHighlight;
+                    clickedButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+                    HedefAdres[Round] = Convert.ToInt32(clickedButton.Text);
+                    listBox1.Items.Add(HedefAdres[Round] + " - " + Sehirler.SehirAd[HedefAdres[Round]]);
+                    Round++;
                 }
             }
             else
@@ -215,19 +226,19 @@ namespace StorkShipping
                 clickedButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
                 clickedButton.ForeColor = System.Drawing.SystemColors.ControlText;
                 Round--;
-              
+
                 for (int i = 0; i < HedefAdres.Length; i++)
                 {
-                    if(HedefAdres[i]== Convert.ToInt32(clickedButton.Text))
+                    if (HedefAdres[i] == Convert.ToInt32(clickedButton.Text))
                     {
                         listBox1.Items.Remove(Convert.ToInt32(clickedButton.Text) + " - " + Sehirler.SehirAd[Convert.ToInt32(clickedButton.Text)]);
                         Array.Clear(HedefAdres, i, 1);
-               
+
                     }
-                    
+
                 }
 
-                for(int i =0; i<HedefAdres.Length-1;i++)
+                for (int i = 0; i < HedefAdres.Length - 1; i++)
                 {
                     if (HedefAdres[i] == 0)
                     {
@@ -236,32 +247,33 @@ namespace StorkShipping
                             HedefAdres[j] = HedefAdres[j + 1];
                         }
                     }
-                }             
-            }                                
+                }
+            }
+            label8.Text = "Seçilen Şehir Sayısı = "+Round.ToString();
         }
         private void SehirEkle_Click(object sender, EventArgs e)
         {
             int sehirplaka = 0;
 
-            if (radioButton2.Checked == true)sehirplaka = Sehirler.SehirPlakaBul(textBox4.Text);
+            if (radioButton2.Checked == true) sehirplaka = Sehirler.SehirPlakaBul(textBox4.Text);
             else
             {
-             if (textBox4.Text != "")sehirplaka = Convert.ToInt32(textBox4.Text);
+                if (textBox4.Text != "") sehirplaka = Convert.ToInt32(textBox4.Text);
             }
-         
+
             if (sehirplaka < 82 && sehirplaka > 0 && (Controls["button" + sehirplaka].BackColor == System.Drawing.SystemColors.ButtonHighlight))
-                {
-                    (Controls["button" + sehirplaka] as Button).BackColor = System.Drawing.SystemColors.MenuHighlight;
-                    (Controls["button" + sehirplaka] as Button).ForeColor = System.Drawing.SystemColors.ControlLightLight;
-                    HedefAdres[Round] = sehirplaka;
-                    listBox1.Items.Add(HedefAdres[Round] + " - " + Sehirler.SehirAd[HedefAdres[Round]]);
-                    Round++;
+            {
+                (Controls["button" + sehirplaka] as Button).BackColor = System.Drawing.SystemColors.MenuHighlight;
+                (Controls["button" + sehirplaka] as Button).ForeColor = System.Drawing.SystemColors.ControlLightLight;
+                HedefAdres[Round] = sehirplaka;
+                listBox1.Items.Add(HedefAdres[Round] + " - " + Sehirler.SehirAd[HedefAdres[Round]]);
+                Round++;
             }
             else
             {
-                    MessageBox.Show("Yanlış veya zaten seçilmiş bir şehir girdiniz");
+                MessageBox.Show("Yanlış veya zaten seçilmiş bir şehir girdiniz");
             }
-            
+
 
             textBox4.Clear();
         }
@@ -307,7 +319,7 @@ namespace StorkShipping
         {
             panel1.BackColor = Color.FromArgb(20, Color.White);
             panel2.BackColor = Color.FromArgb(20, Color.White);
-            radioButton1.Checked=true;
+            radioButton1.Checked = true;
             label7.Visible = false;
             label6.Visible = false;
             label3.Visible = false;
@@ -318,13 +330,13 @@ namespace StorkShipping
         }
         private void TextBox4_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(radioButton1.Checked==true)
+            if (radioButton1.Checked == true)
             {
                 if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
                 {
                     e.Handled = true;
-                }              
-            }       
+                }
+            }
         }
         private void RadioButton1_CheckedChanged(object sender, EventArgs e)
         {
@@ -337,7 +349,7 @@ namespace StorkShipping
             textBox4.MaxLength = 20;
         }
         private void Hesapla(object sender, EventArgs e)
-{         
+        {
             int[,] graf =
     {
                     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,191,0,69,0,0,0,0,335,0,0,0,0,0,0,0,192,0,0,0,0,207,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,87,0},
@@ -422,28 +434,13 @@ namespace StorkShipping
 {87,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,125,0,0,0,129,0,0,0,0,0,0,0,0,0,0,0,0,0,0,104,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,69,0,0,0,0,0,0,0,0,0,0,0,0,113,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
             };
-    
+
             FormSifirla();
             label6.Visible = true;
             label7.Visible = true;
             label3.Visible = true;
-            if (HedefAdres[0] != 0)
-            {                 
-                for (int i = 0; i < Round ; i++)
-                {
-                   
-                    EnkisaYoluBul(KaynakAdres[i]-1, HedefAdres[i] - 1, 81, graf, 1);
-                 
-
-                    EnkisaYoluBul(KaynakAdres[i]-1, AnlikHedef-1 , 81, graf, 0);
-
-                }
-            }
-            else
-            {
-             MessageBox.Show("Güzargah Oluşturulabilmesi için, en az bir hedef şehir seçilmelidir.");
-            }
-
+            if (HedefAdres[0] != 0) EnkisaYoluBul(graf);
+            else MessageBox.Show("Güzargah Oluşturulabilmesi için, en az bir hedef şehir seçilmelidir.");
         }
 
     }

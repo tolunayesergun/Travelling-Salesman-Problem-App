@@ -132,6 +132,7 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.silToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label8 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -1163,7 +1164,7 @@
             this.panel1.Controls.Add(this.listBox2);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.label2);
-            this.panel1.Location = new System.Drawing.Point(725, 676);
+            this.panel1.Location = new System.Drawing.Point(720, 676);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(475, 113);
             this.panel1.TabIndex = 91;
@@ -1197,9 +1198,9 @@
             this.listBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.listBox2.FormattingEnabled = true;
             this.listBox2.ItemHeight = 15;
-            this.listBox2.Location = new System.Drawing.Point(321, 20);
+            this.listBox2.Location = new System.Drawing.Point(313, 20);
             this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(139, 75);
+            this.listBox2.Size = new System.Drawing.Size(147, 75);
             this.listBox2.TabIndex = 95;
             // 
             // label3
@@ -1218,7 +1219,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label2.Location = new System.Drawing.Point(356, 2);
+            this.label2.Location = new System.Drawing.Point(353, 2);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(74, 16);
             this.label2.TabIndex = 87;
@@ -1240,6 +1241,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.panel2.Controls.Add(this.label8);
             this.panel2.Controls.Add(this.SehirEkle);
             this.panel2.Controls.Add(this.radioButton2);
             this.panel2.Controls.Add(this.radioButton1);
@@ -1319,7 +1321,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label4.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label4.Location = new System.Drawing.Point(28, 5);
+            this.label4.Location = new System.Drawing.Point(28, 3);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(118, 16);
             this.label4.TabIndex = 90;
@@ -1333,9 +1335,9 @@
             this.listBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 15;
-            this.listBox1.Location = new System.Drawing.Point(27, 24);
+            this.listBox1.Location = new System.Drawing.Point(11, 21);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(124, 75);
+            this.listBox1.Size = new System.Drawing.Size(153, 75);
             this.listBox1.TabIndex = 0;
             // 
             // contextMenuStrip1
@@ -1351,6 +1353,17 @@
             this.silToolStripMenuItem.Size = new System.Drawing.Size(86, 22);
             this.silToolStripMenuItem.Text = "Sil";
             this.silToolStripMenuItem.Click += new System.EventHandler(this.SilToolStripMenuItem_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label8.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label8.Location = new System.Drawing.Point(8, 96);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(159, 15);
+            this.label8.TabIndex = 98;
+            this.label8.Text = "Seçilen Şehir Sayısı = 0";
             // 
             // AnaSayfa
             // 
@@ -1570,6 +1583,7 @@
         private System.Windows.Forms.ListBox listBox2;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
     }
 }
 
