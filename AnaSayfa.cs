@@ -9,15 +9,7 @@ namespace StorkShipping
     public partial class AnaSayfa : Form
     {
         // Global Değişkenler 
-
-        readonly string[] SehirAd = { " ","Adana", "Adıyaman", "Afyon", "Ağrı", "Amasya", "Ankara", "Antalya", "Artvin", "Aydın",
-            "Balıkesir", "Bilecik", "Bingöl", "Bitlis", "Bolu", "Burdur", "Bursa", "Çanakkale", "Çankırı", "Çorum", "Denizli",
-            "Diyarbakır", "Edirne", "Elazığ", "Ezincan", "Erzurum", "Eskişehir", "Gaziantep", "Giresun", "Gümüşhane", "Hakkari",
-            "Hatay", "Isparta", "Mersin", "İstanbul", "İzmir", "Kars", "Kastamonu", "Kayseri", "Kırklareli", "Kırşehir", "Kocaeli",
-            "Konya", "Kütahya", "Malatya", "Manisa", "Kahramanmaraş", "Mardin", "Muğla", "Muş", "Nevşehir", "Niğde", "Ordu", "Rize",
-            "Sakarya", "Samsun", "Siirt", "Sinop", "Sivas", "Tekirdağ", "Tokat", "Trabzon", "Tunceli", "Şanlıurfa", "Uşak", "Van", "Yozgat",
-            "Zonguldak", "Aksaray", "Bayburt", "Karaman", "Kırıkkale", "Batman", "Şırnak", "Bartın", "Ardahan", "Iğdır", "Yalova", "Karabük",
-            "Kilis", "Osmaniye", "Düzce" };
+        
         readonly Bitmap cizimAlani;
         readonly int[] HedefAdres = new int[10];
         readonly int[] KaynakAdres = new int[11];
@@ -192,7 +184,7 @@ namespace StorkShipping
             {
                 indisDizi[i] = yol[i];
                 toplamYol += graf[yol[i - 1], yol[i]];
-                listBox2.Items.Add((i+1) + ") " + SehirAd[yol[i] + 1] + " [ " +Convert.ToString(yol[i] + 1)+" ]");               
+                listBox2.Items.Add((i+1) + ") " + Sehirler.SehirAd[yol[i] + 1] + " [ " +Convert.ToString(yol[i] + 1)+" ]");               
             }   
             
             label7.Text = Convert.ToString(toplamYol)+" KM";
@@ -214,7 +206,7 @@ namespace StorkShipping
                 clickedButton.BackColor = System.Drawing.SystemColors.MenuHighlight;
                 clickedButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;             
                 HedefAdres[Round] = Convert.ToInt32(clickedButton.Text);                                                       
-                listBox1.Items.Add(HedefAdres[Round] + " - " + SehirAd[HedefAdres[Round]]);
+                listBox1.Items.Add(HedefAdres[Round] + " - " + Sehirler.SehirAd[HedefAdres[Round]]);
                 Round++;
                 }
             }
@@ -228,7 +220,7 @@ namespace StorkShipping
                 {
                     if(HedefAdres[i]== Convert.ToInt32(clickedButton.Text))
                     {
-                        listBox1.Items.Remove(Convert.ToInt32(clickedButton.Text) + " - " + SehirAd[Convert.ToInt32(clickedButton.Text)]);
+                        listBox1.Items.Remove(Convert.ToInt32(clickedButton.Text) + " - " + Sehirler.SehirAd[Convert.ToInt32(clickedButton.Text)]);
                         Array.Clear(HedefAdres, i, 1);
                
                     }
@@ -251,16 +243,7 @@ namespace StorkShipping
         {
             int sehirplaka = 0;
 
-            if (radioButton2.Checked == true)
-            {
-                for (int i = 0; i < SehirAd.Length; i++)
-                {
-                    if (SehirAd[i].ToUpper() == textBox4.Text.ToUpper())
-                    {
-                        sehirplaka = i;
-                    }
-                }
-            }
+            if (radioButton2.Checked == true)sehirplaka = Sehirler.SehirPlakaBul(textBox4.Text);
             else
             {
              if (textBox4.Text != "")sehirplaka = Convert.ToInt32(textBox4.Text);
@@ -271,7 +254,7 @@ namespace StorkShipping
                     (Controls["button" + sehirplaka] as Button).BackColor = System.Drawing.SystemColors.MenuHighlight;
                     (Controls["button" + sehirplaka] as Button).ForeColor = System.Drawing.SystemColors.ControlLightLight;
                     HedefAdres[Round] = sehirplaka;
-                    listBox1.Items.Add(HedefAdres[Round] + " - " + SehirAd[HedefAdres[Round]]);
+                    listBox1.Items.Add(HedefAdres[Round] + " - " + Sehirler.SehirAd[HedefAdres[Round]]);
                     Round++;
             }
             else
@@ -300,7 +283,7 @@ namespace StorkShipping
                 {
                     if (HedefAdres[i] == Convert.ToInt32(deneme))
                     {
-                        listBox1.Items.Remove(Convert.ToInt32(deneme) + " - " + SehirAd[Convert.ToInt32(deneme)]);
+                        listBox1.Items.Remove(Convert.ToInt32(deneme) + " - " + Sehirler.SehirAd[Convert.ToInt32(deneme)]);
                         Array.Clear(HedefAdres, i, 1);
 
                     }
