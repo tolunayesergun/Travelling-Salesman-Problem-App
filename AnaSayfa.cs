@@ -66,6 +66,15 @@ namespace StorkShipping
             // this.InitializeComponent();
             Refresh();
            
+            toplamYol = 0;
+            KaynakAdres[0] = 41;
+            AnlikHedef = 0;
+            Tur = 1;
+            for (int i = 0; i < hedefKontrol.Length; i++)
+            {
+                hedefKontrol[i] = false;
+            }
+
         }
 
         public void EnkisaYoluBul(int baslangic, int hedef, int matrisBoyut, int[,] graf,int islemTipi)
@@ -384,7 +393,6 @@ namespace StorkShipping
  
         private void Hesapla(object sender, EventArgs e)
 {         
-            toplamYol = 0;
             int[,] graf =
     {
                     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,191,0,69,0,0,0,0,335,0,0,0,0,0,0,0,192,0,0,0,0,207,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,87,0},
@@ -469,15 +477,16 @@ namespace StorkShipping
 {87,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,125,0,0,0,129,0,0,0,0,0,0,0,0,0,0,0,0,0,0,104,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,69,0,0,0,0,0,0,0,0,0,0,0,0,113,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
             };
-            KaynakAdres[0] = 41;
-           FormSifirla();
-            Tur = 1;
+    
+            FormSifirla();                
+
             if (HedefAdres[0] != 0)
             {                 
                 for (int i = 0; i < Round ; i++)
                 {
                    
                     EnkisaYoluBul(KaynakAdres[i]-1, HedefAdres[i] - 1, 81, graf, 1);
+                 
 
                     EnkisaYoluBul(KaynakAdres[i]-1, AnlikHedef-1 , 81, graf, 0);
 
