@@ -8,10 +8,7 @@ namespace StorkShipping
 {
     public partial class AnaSayfa : Form
     {
-        // Global Değişkenler 
-
         readonly Bitmap cizimAlani;  // Harita görselini çizim alanı olarak belirlemiz için gerekli global değişken
-        int toplamYol;               // C# ta fonksiyon static değişkenleri bulunmadığı için toplam yolu hesaplarken mesafeleri toplamak adına global olarak tanımladık.
 
         public AnaSayfa()
         {
@@ -43,17 +40,18 @@ namespace StorkShipping
             grafik.Clear(Color.Transparent);
             Refresh();
             listBox2.Items.Clear();
-            toplamYol = 0;
+        
         }
         public void EnkisaYoluBul(int[,] graf)
         {
-            int[] HedefAdres = new int[10];      //Kullanıcının seçtiği şehirleri listboxtan çekip bu dizide saklıyorz
-            int Tur=1;                           //Yazdırma fonksiyonunun çalışma sayısını tutuyor
+            int[] HedefAdres = new int[10];      //Kullanıcının seçtiği şehirleri listboxtan çekip bu dizide saklıyorz                                 
             int[] KaynakAdres = new int[11];     //Seçilen adresler arasından kaynak seçimini tutuyor
+            int Tur = 1;                         //Yazdırma fonksiyonunun çalışma sayısını tutuyor
             int matrisBoyut = 81;                //Komşuluk matrisinin boyutunu tutuyor
             int islemTipi = 1;                   //İşlem tipini tutuyor ( Yazdırma işlevi ve tespit işlemi için iki ayrı işlem yapılıyor)
             int hedef;                           //Son düğümün adresini tutuyor. işlem tipine göre alıcağı değer değişiyor  
             int AnlikHedef = 0;                  //Per döngüsü içersindeki hedef belirleme için gerekli adresi tutuyor
+            int toplamYol = 0;                   //Tüm şehirler gezildiğinde alınan mesafeyi içinde tutuyor
             bool[] hedefKontrol = new bool[10];  //Kullanıcının seçtiği şehirlerin kullanılma durumunu boolean bir şekilde saklıyor
             KaynakAdres[0] = 41;                 //Program göreve Kocaeli'den başlıyacağı için deafult olarak 41 adresi veriliyor.
            
@@ -113,8 +111,9 @@ namespace StorkShipping
                         }
                     }
                }
-                if (islemTipi == 0)
+                if (islemTipi == 0)  // Çizim işlemi için gerekli hesaplamalar yapılan kısım
                 {
+               
                     while (dugum != null)
                     {
                         yol.AddFirst(dugum.Value);
@@ -123,11 +122,26 @@ namespace StorkShipping
 
                     KaynakAdres[Tur] = AnlikHedef;
                     Tur++;
-                    YazdirVeEkle(yol.ToList(), graf, KaynakAdres,Tur);
+
+                    int[] indisDizi = new int[yol.Count];
+                    indisDizi[0] = KaynakAdres[Tur - 2] - 1;
+                    if (Tur == 2) listBox2.Items.Add("1) Kocaeli [ 41 ]");
+
+                    for (int i = 1; i < yol.Count; i++)
+                    {
+                        indisDizi[i] = yol.ToList()[i];
+                        toplamYol += graf[yol.ToList()[i - 1], yol.ToList()[i]];
+                        listBox2.Items.Add((listBox2.Items.Count + 1) + ") " + Sehirler.SehirAd[yol.ToList()[i] + 1] + " [ " + Convert.ToString(yol.ToList()[i] + 1) + " ]");
+                    }
+
+                    label7.Text = Convert.ToString(toplamYol) + " KM";
+                    label6.Text = listBox2.Items.Count.ToString();
+                    CizimYap(indisDizi);
+
                     islemTipi = 1;
 
                 }
-                else
+                else  // Sonraki gidilecek hedefi seçme işlemi için gerekli kısım
                 {
                     int Tempkontrol = AnlikHedef;
                     int kontrolTut = 0;
@@ -169,25 +183,6 @@ namespace StorkShipping
                     goto islemYap;
                 }
            }
-        }
-        public void YazdirVeEkle(List<int> yol, int[,] graf, int[] KaynakAdres,int Tur)
-        {
-            int[] indisDizi = new int[yol.Count];
-       
-
-            indisDizi[0] = KaynakAdres[Tur - 2] - 1;
-            if (Tur == 2) listBox2.Items.Add("1) Kocaeli [ 41 ]");
-
-            for (int i = 1; i < yol.Count; i++)
-            {
-                indisDizi[i] = yol[i];
-                toplamYol += graf[yol[i - 1], yol[i]];
-                listBox2.Items.Add((listBox2.Items.Count + 1) + ") " + Sehirler.SehirAd[yol[i] + 1] + " [ " + Convert.ToString(yol[i] + 1) + " ]");
-            }
-
-            label7.Text = Convert.ToString(toplamYol) + " KM";
-            label6.Text = listBox2.Items.Count.ToString();
-            CizimYap(indisDizi);
         }
         private void Btn_Click(object sender, EventArgs e)
         {
