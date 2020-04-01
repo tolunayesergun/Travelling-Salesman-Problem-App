@@ -10,13 +10,8 @@ namespace StorkShipping
     {
         // Global Değişkenler 
 
-        readonly Bitmap cizimAlani;
-        readonly int[] HedefAdres = new int[10];
-        int toplamYol = 0;
-        int Tur;
-        int Round = 0;
-
-        //------------------------------ 
+        readonly Bitmap cizimAlani;  // Harita görselini çizim alanı olarak belirlemiz için gerekli global değişken
+        int toplamYol;               // C# ta fonksiyon static değişkenleri bulunmadığı için toplam yolu hesaplarken mesafeleri toplamak adına global olarak tanımladık.
 
         public AnaSayfa()
         {
@@ -34,7 +29,7 @@ namespace StorkShipping
             {
 
                 grafik.DrawLine(Kalem, (Controls["button" + (adresler[i] + 1)] as Button).Location.X + 15, (Controls["button" + (adresler[i] + 1)] as Button).Location.Y + 15,
-                     (Controls["button" + (adresler[i + 1] + 1)] as Button).Location.X + 15, (Controls["button" + (adresler[i + 1] + 1)] as Button).Location.Y + 15);
+                (Controls["button" + (adresler[i + 1] + 1)] as Button).Location.X + 15, (Controls["button" + (adresler[i + 1] + 1)] as Button).Location.Y + 15);
 
             }
 
@@ -49,35 +44,36 @@ namespace StorkShipping
             Refresh();
             listBox2.Items.Clear();
             toplamYol = 0;
-            Tur = 1;
         }
         public void EnkisaYoluBul(int[,] graf)
         {
-            int[] KaynakAdres = new int[11];
-            int matrisBoyut = 81;
-            int islemTipi = 1;
-            int hedef;
-            int AnlikHedef = 0;
-            KaynakAdres[0] = 41;
-            bool[] hedefKontrol = new bool[10];
+            int[] HedefAdres = new int[10];      //Kullanıcının seçtiği şehirleri listboxtan çekip bu dizide saklıyorz
+            int Tur=1;                           //Yazdırma fonksiyonunun çalışma sayısını tutuyor
+            int[] KaynakAdres = new int[11];     //Seçilen adresler arasından kaynak seçimini tutuyor
+            int matrisBoyut = 81;                //Komşuluk matrisinin boyutunu tutuyor
+            int islemTipi = 1;                   //İşlem tipini tutuyor ( Yazdırma işlevi ve tespit işlemi için iki ayrı işlem yapılıyor)
+            int hedef;                           //Son düğümün adresini tutuyor. işlem tipine göre alıcağı değer değişiyor  
+            int AnlikHedef = 0;                  //Per döngüsü içersindeki hedef belirleme için gerekli adresi tutuyor
+            bool[] hedefKontrol = new bool[10];  //Kullanıcının seçtiği şehirlerin kullanılma durumunu boolean bir şekilde saklıyor
+            KaynakAdres[0] = 41;                 //Program göreve Kocaeli'den başlıyacağı için deafult olarak 41 adresi veriliyor.
+           
 
-            for (int per = 0; per < Round; per++)
+            for (int i = 0; i < listBox1.Items.Count; i++) HedefAdres[i] = Convert.ToInt32(listBox1.Items[i].ToString().Substring(0,2));         
+
+            for (int per = 0; per < listBox1.Items.Count; per++)
            {
                islemYap:
                 int baslangic = KaynakAdres[per] - 1;
+
                 if (islemTipi == 1) hedef = HedefAdres[per] - 1;
                 else hedef = AnlikHedef - 1;
                 LinkedList<int> yol = new LinkedList<int>();
                 int? dugum = hedef;
+                int?[] oncekiDugum = new int?[matrisBoyut];
                 int[] uzaklik = new int[matrisBoyut];
                 bool[] gezmeKontrol = new bool[matrisBoyut];
-                int?[] oncekiDugum = new int?[matrisBoyut];
-
-               for (int i = 0; i < matrisBoyut; i++)
-               {
-                    uzaklik[i] = int.MaxValue;
-               }
-
+          
+                for (int i = 0; i < matrisBoyut; i++) uzaklik[i] = int.MaxValue;           
                 uzaklik[baslangic] = 0;
 
                while (true)
@@ -127,7 +123,7 @@ namespace StorkShipping
 
                     KaynakAdres[Tur] = AnlikHedef;
                     Tur++;
-                    YazdirVeEkle(yol.ToList(), graf, KaynakAdres);
+                    YazdirVeEkle(yol.ToList(), graf, KaynakAdres,Tur);
                     islemTipi = 1;
 
                 }
@@ -136,7 +132,7 @@ namespace StorkShipping
                     int Tempkontrol = AnlikHedef;
                     int kontrolTut = 0;
 
-                    for (int i = 0; i < Round; i++)
+                    for (int i = 0; i < listBox1.Items.Count; i++)
                     {
                         if (hedefKontrol[i] == false)
                         {
@@ -145,7 +141,7 @@ namespace StorkShipping
                     }
 
 
-                    for (int i = 0; i < Round; i++)
+                    for (int i = 0; i < listBox1.Items.Count; i++)
                     {
 
                         if (uzaklik[HedefAdres[i] - 1] <= uzaklik[AnlikHedef - 1] && hedefKontrol[i] == false)
@@ -158,7 +154,7 @@ namespace StorkShipping
 
                     if (Tempkontrol == AnlikHedef)
                     {
-                        for (int j = 0; j < Round; j++)
+                        for (int j = 0; j < listBox1.Items.Count; j++)
                         {
                             if (hedefKontrol[j] == false)
                             {
@@ -174,9 +170,11 @@ namespace StorkShipping
                 }
            }
         }
-        public void YazdirVeEkle(List<int> yol, int[,] graf, int[] KaynakAdres)
+        public void YazdirVeEkle(List<int> yol, int[,] graf, int[] KaynakAdres,int Tur)
         {
             int[] indisDizi = new int[yol.Count];
+       
+
             indisDizi[0] = KaynakAdres[Tur - 2] - 1;
             if (Tur == 2) listBox2.Items.Add("1) Kocaeli [ 41 ]");
 
@@ -194,10 +192,11 @@ namespace StorkShipping
         private void Btn_Click(object sender, EventArgs e)
         {
             Button clickedButton = (Button)sender;
+            int[] HedefAdres = new int[10];
 
             if (clickedButton.BackColor == System.Drawing.SystemColors.ButtonHighlight)
             {
-                if (Round > 9)
+                if (listBox1.Items.Count > 9)
                 {
                     MessageBox.Show("En Fazla 10 Şehir Seçebilirsiniz");
                 }
@@ -205,16 +204,16 @@ namespace StorkShipping
                 {
                     clickedButton.BackColor = System.Drawing.SystemColors.MenuHighlight;
                     clickedButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-                    HedefAdres[Round] = Convert.ToInt32(clickedButton.Text);
-                    listBox1.Items.Add(HedefAdres[Round] + " - " + Sehirler.SehirAd[HedefAdres[Round]]);
-                    Round++;
+                    HedefAdres[listBox1.Items.Count] = Convert.ToInt32(clickedButton.Text);
+                    listBox1.Items.Add(HedefAdres[listBox1.Items.Count] + " - " + Sehirler.SehirAd[HedefAdres[listBox1.Items.Count]]);
+       
                 }
             }
             else
             {
                 clickedButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
                 clickedButton.ForeColor = System.Drawing.SystemColors.ControlText;
-                Round--;
+           
 
                 for (int i = 0; i < HedefAdres.Length; i++)
                 {
@@ -222,7 +221,6 @@ namespace StorkShipping
                     {
                         listBox1.Items.Remove(Convert.ToInt32(clickedButton.Text) + " - " + Sehirler.SehirAd[Convert.ToInt32(clickedButton.Text)]);
                         Array.Clear(HedefAdres, i, 1);
-
                     }
 
                 }
@@ -238,11 +236,12 @@ namespace StorkShipping
                     }
                 }
             }
-            label8.Text = "Seçilen Şehir Sayısı = "+Round.ToString();
+            label8.Text = "Seçilen Şehir Sayısı = "+listBox1.Items.Count.ToString();
         }
         private void SehirEkle_Click(object sender, EventArgs e)
         {
             int sehirplaka = 0;
+            int[] HedefAdres = new int[10];
 
             if (radioButton2.Checked == true) sehirplaka = Sehirler.SehirPlakaBul(textBox4.Text);
             else
@@ -254,9 +253,8 @@ namespace StorkShipping
             {
                 (Controls["button" + sehirplaka] as Button).BackColor = System.Drawing.SystemColors.MenuHighlight;
                 (Controls["button" + sehirplaka] as Button).ForeColor = System.Drawing.SystemColors.ControlLightLight;
-                HedefAdres[Round] = sehirplaka;
-                listBox1.Items.Add(HedefAdres[Round] + " - " + Sehirler.SehirAd[HedefAdres[Round]]);
-                Round++;
+                HedefAdres[listBox1.Items.Count] = sehirplaka;
+                listBox1.Items.Add(HedefAdres[listBox1.Items.Count] + " - " + Sehirler.SehirAd[HedefAdres[listBox1.Items.Count]]);    
             }
             else
             {
@@ -268,6 +266,7 @@ namespace StorkShipping
         }
         private void SilToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            int[] HedefAdres = new int[10];
             if (listBox1.SelectedIndex == -1)
             {
                 MessageBox.Show("Silme işlemi için öncelikle, silinecek şehir seçmelisiniz");
@@ -278,7 +277,6 @@ namespace StorkShipping
                 deneme = Convert.ToString(Convert.ToInt32(listBox1.SelectedItem.ToString().Substring(0, 2)));
                 (Controls["button" + deneme] as Button).BackColor = System.Drawing.SystemColors.ButtonHighlight;
                 (Controls["button" + deneme] as Button).ForeColor = System.Drawing.SystemColors.ControlText;
-                Round--;
 
                 for (int i = 0; i < HedefAdres.Length; i++)
                 {
@@ -288,7 +286,6 @@ namespace StorkShipping
                         Array.Clear(HedefAdres, i, 1);
 
                     }
-
                 }
 
                 for (int i = 0; i < HedefAdres.Length - 1; i++)
@@ -303,7 +300,7 @@ namespace StorkShipping
                 }
 
             }
-               label8.Text = "Seçilen Şehir Sayısı = "+Round.ToString();
+               label8.Text = "Seçilen Şehir Sayısı = "+listBox1.Items.Count.ToString();
         }
         private void AnaSayfa_Load(object sender, EventArgs e)
         {
@@ -429,9 +426,9 @@ namespace StorkShipping
             label6.Visible = true;
             label7.Visible = true;
             label3.Visible = true;
-            if (HedefAdres[0] != 0) EnkisaYoluBul(graf);
+            if (listBox1.Items.Count != 0)EnkisaYoluBul(graf);
             else MessageBox.Show("Güzargah Oluşturulabilmesi için, en az bir hedef şehir seçilmelidir.");
+    
         }
-
     }
 }
