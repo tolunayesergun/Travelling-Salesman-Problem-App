@@ -12,7 +12,6 @@ namespace StorkShipping
 
         readonly Bitmap cizimAlani;
         readonly int[] HedefAdres = new int[10];
-        readonly bool[] hedefKontrol = new bool[10];
         int toplamYol = 0;
         int Tur;
         int Round = 0;
@@ -27,9 +26,6 @@ namespace StorkShipping
         }
         public void CizimYap(int[] adresler)
         {
-
-
-
             Pen Kalem = new Pen(System.Drawing.Color.Red, 5);
             Graphics grafik;
             grafik = Graphics.FromImage(cizimAlani);
@@ -50,18 +46,10 @@ namespace StorkShipping
             Graphics grafik;
             grafik = Graphics.FromImage(cizimAlani);
             grafik.Clear(Color.Transparent);
-            // this.Controls.Clear();
-            // this.InitializeComponent();
             Refresh();
             listBox2.Items.Clear();
             toplamYol = 0;
-
             Tur = 1;
-            for (int i = 0; i < hedefKontrol.Length; i++)
-            {
-                hedefKontrol[i] = false;
-            }
-
         }
         public void EnkisaYoluBul(int[,] graf)
         {
@@ -71,8 +59,9 @@ namespace StorkShipping
             int hedef;
             int AnlikHedef = 0;
             KaynakAdres[0] = 41;
+            bool[] hedefKontrol = new bool[10];
 
-           for (int per = 0; per < Round; per++)
+            for (int per = 0; per < Round; per++)
            {
                islemYap:
                 int baslangic = KaynakAdres[per] - 1;
@@ -102,7 +91,7 @@ namespace StorkShipping
 
                     for (int i = 0; i < matrisBoyut; i++)
                     {
-                        if (gezmeKontrol[i] == false && enAzUzaklik > uzaklik[i])
+                        if (gezmeKontrol[i] == false &&  uzaklik[i] < enAzUzaklik)
                         {
                             enYakinDugum = i;
                             enAzUzaklik = uzaklik[i];
@@ -195,7 +184,7 @@ namespace StorkShipping
             {
                 indisDizi[i] = yol[i];
                 toplamYol += graf[yol[i - 1], yol[i]];
-                listBox2.Items.Add((i + 1) + ") " + Sehirler.SehirAd[yol[i] + 1] + " [ " + Convert.ToString(yol[i] + 1) + " ]");
+                listBox2.Items.Add((listBox2.Items.Count + 1) + ") " + Sehirler.SehirAd[yol[i] + 1] + " [ " + Convert.ToString(yol[i] + 1) + " ]");
             }
 
             label7.Text = Convert.ToString(toplamYol) + " KM";
@@ -314,6 +303,7 @@ namespace StorkShipping
                 }
 
             }
+               label8.Text = "Seçilen Şehir Sayısı = "+Round.ToString();
         }
         private void AnaSayfa_Load(object sender, EventArgs e)
         {
