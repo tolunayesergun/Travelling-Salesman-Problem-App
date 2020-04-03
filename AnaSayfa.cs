@@ -271,11 +271,10 @@ namespace StorkShipping
 
                 while ((stun = dizin.ReadLine()) != null)
                 {
-                    string[] mSatir = stun.Split('-', '(', ',');
-             
-                    for (int i = 2; i < mSatir.Length-1; i += 3)
+                    string[] mSatir = stun.Split('-', ',');           
+                    for (int i = 2; i < mSatir.Length-1; i += 2)
                     {
-                        Sehirler.graf[Convert.ToInt32(mSatir[0]) - 1, (Sehirler.FindCityName(mSatir[i]) - 1)] = Convert.ToInt32(mSatir[i + 1].Substring(0, mSatir[i + 1].Length - 1));            
+                        Sehirler.graf[Convert.ToInt32(mSatir[0]) - 1, (Sehirler.FindCityName(mSatir[i]) - 1)] = Convert.ToInt32(mSatir[i + 1]);            
                     }
                 }
             }
