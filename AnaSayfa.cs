@@ -5,8 +5,6 @@ using System.Linq;
 using System.Windows.Forms;
 using System.IO;
 
-
-
 namespace StorkShipping
 {
     public partial class AnaSayfa : Form
