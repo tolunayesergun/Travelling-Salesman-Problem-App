@@ -186,11 +186,9 @@ namespace StorkShipping
                 }
             }
         }
-        private void Btn_Click(object sender, EventArgs e)
+        public void ListElemanEkleSil(int btnNo, int islemTipi)
         {
-            Button clickedButton = (Button)sender;
-
-            if (clickedButton.BackColor == System.Drawing.SystemColors.ButtonHighlight)
+            if (islemTipi == 0)
             {
                 if (listBox1.Items.Count > 9)
                 {
@@ -198,45 +196,77 @@ namespace StorkShipping
                 }
                 else
                 {
-                    clickedButton.BackColor = System.Drawing.SystemColors.MenuHighlight;
-                    clickedButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-                    listBox1.Items.Add(Convert.ToInt32(clickedButton.Text) + " - " + Sehirler.SehirAd[Convert.ToInt32(clickedButton.Text)]);
-
+                    if (btnNo < 82 && btnNo > 0 && (Controls["button" + btnNo].BackColor == System.Drawing.SystemColors.ButtonHighlight))
+                    {
+                        (Controls["button" + btnNo] as Button).BackColor = System.Drawing.SystemColors.MenuHighlight;
+                        (Controls["button" + btnNo] as Button).ForeColor = System.Drawing.SystemColors.ControlLightLight;
+                        listBox1.Items.Add(btnNo.ToString() + " - " + Sehirler.SehirAd[btnNo]);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Yanlış veya zaten seçilmiş bir şehir girdiniz");
+                    }
                 }
             }
             else
             {
-                clickedButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-                clickedButton.ForeColor = System.Drawing.SystemColors.ControlText;
+
+                (Controls["button" + btnNo] as Button).BackColor = System.Drawing.SystemColors.ButtonHighlight;
+                (Controls["button" + btnNo] as Button).ForeColor = System.Drawing.SystemColors.ControlText;
+
                 for (int i = 0; i < listBox1.Items.Count; i++)
                 {
-                    if (Convert.ToInt32(listBox1.Items[i].ToString().Substring(0, 2)) == Convert.ToInt32(clickedButton.Text))
+                    if (Convert.ToInt32(listBox1.Items[i].ToString().Substring(0, 2)) == btnNo)
                     {
-                        listBox1.Items.Remove(Convert.ToInt32(clickedButton.Text) + " - " + Sehirler.SehirAd[Convert.ToInt32(clickedButton.Text)]);
+                        listBox1.Items.Remove(btnNo.ToString() + " - " + Sehirler.SehirAd[btnNo]);
                     }
                 }
+
             }
             label8.Text = "Seçilen Şehir Sayısı = " + listBox1.Items.Count.ToString();
+        }
+        public void GrafOlustur()
+        {
+            try
+            {
+                string stun;
+                using (StreamReader dizin = new StreamReader(Application.StartupPath + "\\SehirVeri.txt"))
+
+                    while ((stun = dizin.ReadLine()) != null)
+                    {
+                        string[] mSatir = stun.Split('-', ',');
+                        for (int i = 2; i < mSatir.Length - 1; i += 2)
+                        {
+                            Sehirler.graf[Convert.ToInt32(mSatir[0]) - 1, (Sehirler.FindCityName(mSatir[i]) - 1)] = Convert.ToInt32(mSatir[i + 1]);
+                        }
+                    }
+            }
+            catch
+            {
+                MessageBox.Show("problem"); // tekrar yüklemeyi sağla.
+            }
+        }
+        private void Btn_Click(object sender, EventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            if (clickedButton.BackColor == System.Drawing.SystemColors.ButtonHighlight)
+            {
+              ListElemanEkleSil(Convert.ToInt32(clickedButton.Text.Substring(0, 2)), 0);
+            }
+            else
+            {
+                ListElemanEkleSil(Convert.ToInt32(clickedButton.Text.Substring(0, 2)), 1);
+            }
         }
         private void SehirEkle_Click(object sender, EventArgs e)
         {
             int sehirplaka = 0;
-
             if (radioButton2.Checked == true) sehirplaka = Sehirler.SehirPlakaBul(textBox4.Text);
             else
             {
                 if (textBox4.Text != "") sehirplaka = Convert.ToInt32(textBox4.Text);
             }
-            if (sehirplaka < 82 && sehirplaka > 0 && (Controls["button" + sehirplaka].BackColor == System.Drawing.SystemColors.ButtonHighlight))
-            {
-                (Controls["button" + sehirplaka] as Button).BackColor = System.Drawing.SystemColors.MenuHighlight;
-                (Controls["button" + sehirplaka] as Button).ForeColor = System.Drawing.SystemColors.ControlLightLight;
-                listBox1.Items.Add(sehirplaka.ToString() + " - " + Sehirler.SehirAd[sehirplaka]);
-            }
-            else
-            {
-                MessageBox.Show("Yanlış veya zaten seçilmiş bir şehir girdiniz");
-            }
+            ListElemanEkleSil(sehirplaka, 0);
             textBox4.Clear();
         }
         private void SilToolStripMenuItem_Click(object sender, EventArgs e)
@@ -247,42 +277,9 @@ namespace StorkShipping
             }
             else
             {
-                string deneme;
-                deneme = Convert.ToString(Convert.ToInt32(listBox1.SelectedItem.ToString().Substring(0, 2)));
-                (Controls["button" + deneme] as Button).BackColor = System.Drawing.SystemColors.ButtonHighlight;
-                (Controls["button" + deneme] as Button).ForeColor = System.Drawing.SystemColors.ControlText;
-
-                for (int i = 0; i < listBox1.Items.Count; i++)
-                {
-                    if (Convert.ToInt32(listBox1.Items[i].ToString().Substring(0, 2)) == Convert.ToInt32(deneme))
-                    {
-                        listBox1.Items.Remove(Convert.ToInt32(deneme) + " - " + Sehirler.SehirAd[Convert.ToInt32(deneme)]);
-                    }
-                }
+                ListElemanEkleSil(Convert.ToInt32(listBox1.SelectedItem.ToString().Substring(0, 2)), 1);
             }
-            label8.Text = "Seçilen Şehir Sayısı = " + listBox1.Items.Count.ToString();
-        }
-        public void GrafOlustur()
-        {
-            try
-            {
-            string stun;
-            using (StreamReader dizin = new StreamReader(Application.StartupPath + "\\SehirVeri.txt"))
-
-                while ((stun = dizin.ReadLine()) != null)
-                {
-                    string[] mSatir = stun.Split('-', ',');           
-                    for (int i = 2; i < mSatir.Length-1; i += 2)
-                    {
-                        Sehirler.graf[Convert.ToInt32(mSatir[0]) - 1, (Sehirler.FindCityName(mSatir[i]) - 1)] = Convert.ToInt32(mSatir[i + 1]);            
-                    }
-                }
-            }
-            catch
-            {
-                MessageBox.Show("problem"); // tekrar yüklemeyi sağla.
-            }
-        }
+        }    
         private void AnaSayfa_Load(object sender, EventArgs e)
         {
             panel1.BackColor = Color.FromArgb(20, Color.White);
