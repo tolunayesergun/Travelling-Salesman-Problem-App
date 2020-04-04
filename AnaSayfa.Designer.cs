@@ -116,6 +116,11 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.listBox3 = new System.Windows.Forms.ListBox();
+            this.button83 = new System.Windows.Forms.Button();
+            this.button82 = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.listBox2 = new System.Windows.Forms.ListBox();
@@ -133,11 +138,6 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.silToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.button82 = new System.Windows.Forms.Button();
-            this.button83 = new System.Windows.Forms.Button();
-            this.listBox3 = new System.Windows.Forms.ListBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -1179,6 +1179,65 @@
             this.panel1.Size = new System.Drawing.Size(417, 113);
             this.panel1.TabIndex = 91;
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.checkBox1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.checkBox1.Location = new System.Drawing.Point(35, 96);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(172, 20);
+            this.checkBox1.TabIndex = 101;
+            this.checkBox1.Text = "Dönüş Yolunu Göster";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label1.Location = new System.Drawing.Point(63, 2);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(114, 16);
+            this.label1.TabIndex = 100;
+            this.label1.Text = "Alternatif Yollar";
+            // 
+            // listBox3
+            // 
+            this.listBox3.BackColor = System.Drawing.Color.Azure;
+            this.listBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.listBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.listBox3.FormattingEnabled = true;
+            this.listBox3.ItemHeight = 15;
+            this.listBox3.Location = new System.Drawing.Point(54, 20);
+            this.listBox3.Name = "listBox3";
+            this.listBox3.Size = new System.Drawing.Size(136, 75);
+            this.listBox3.TabIndex = 99;
+            // 
+            // button83
+            // 
+            this.button83.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.button83.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.button83.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.button83.Location = new System.Drawing.Point(19, 61);
+            this.button83.Name = "button83";
+            this.button83.Size = new System.Drawing.Size(25, 26);
+            this.button83.TabIndex = 98;
+            this.button83.Text = "▼";
+            this.button83.UseVisualStyleBackColor = false;
+            // 
+            // button82
+            // 
+            this.button82.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.button82.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.button82.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.button82.Location = new System.Drawing.Point(19, 29);
+            this.button82.Name = "button82";
+            this.button82.Size = new System.Drawing.Size(25, 26);
+            this.button82.TabIndex = 93;
+            this.button82.Text = "▲";
+            this.button82.UseVisualStyleBackColor = false;
+            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -1299,7 +1358,7 @@
             this.radioButton2.TabStop = true;
             this.radioButton2.Text = "Şehir Ad İle";
             this.radioButton2.UseVisualStyleBackColor = true;
-            this.radioButton2.CheckedChanged += new System.EventHandler(this.RadioButton2_CheckedChanged);
+            this.radioButton2.CheckedChanged += new System.EventHandler(this.RadioButton_CheckedChanged);
             // 
             // radioButton1
             // 
@@ -1312,7 +1371,7 @@
             this.radioButton1.TabStop = true;
             this.radioButton1.Text = "Plaka İle";
             this.radioButton1.UseVisualStyleBackColor = true;
-            this.radioButton1.CheckedChanged += new System.EventHandler(this.RadioButton1_CheckedChanged);
+            this.radioButton1.CheckedChanged += new System.EventHandler(this.RadioButton_CheckedChanged);
             // 
             // label5
             // 
@@ -1335,7 +1394,7 @@
             this.textBox4.Size = new System.Drawing.Size(149, 15);
             this.textBox4.TabIndex = 90;
             this.textBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox4_KeyPress);
+            this.textBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox_KeyPress);
             // 
             // label4
             // 
@@ -1374,65 +1433,6 @@
             this.silToolStripMenuItem.Size = new System.Drawing.Size(86, 22);
             this.silToolStripMenuItem.Text = "Sil";
             this.silToolStripMenuItem.Click += new System.EventHandler(this.SilToolStripMenuItem_Click);
-            // 
-            // button82
-            // 
-            this.button82.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.button82.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button82.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.button82.Location = new System.Drawing.Point(19, 29);
-            this.button82.Name = "button82";
-            this.button82.Size = new System.Drawing.Size(25, 26);
-            this.button82.TabIndex = 93;
-            this.button82.Text = "▲";
-            this.button82.UseVisualStyleBackColor = false;
-            // 
-            // button83
-            // 
-            this.button83.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.button83.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button83.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.button83.Location = new System.Drawing.Point(19, 61);
-            this.button83.Name = "button83";
-            this.button83.Size = new System.Drawing.Size(25, 26);
-            this.button83.TabIndex = 98;
-            this.button83.Text = "▼";
-            this.button83.UseVisualStyleBackColor = false;
-            // 
-            // listBox3
-            // 
-            this.listBox3.BackColor = System.Drawing.Color.Azure;
-            this.listBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.listBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.listBox3.FormattingEnabled = true;
-            this.listBox3.ItemHeight = 15;
-            this.listBox3.Location = new System.Drawing.Point(54, 20);
-            this.listBox3.Name = "listBox3";
-            this.listBox3.Size = new System.Drawing.Size(136, 75);
-            this.listBox3.TabIndex = 99;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label1.Location = new System.Drawing.Point(63, 2);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(114, 16);
-            this.label1.TabIndex = 100;
-            this.label1.Text = "Alternatif Yollar";
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.checkBox1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.checkBox1.Location = new System.Drawing.Point(35, 96);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(172, 20);
-            this.checkBox1.TabIndex = 101;
-            this.checkBox1.Text = "Dönüş Yolunu Göster";
-            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // AnaSayfa
             // 

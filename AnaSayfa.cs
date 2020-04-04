@@ -56,7 +56,7 @@ namespace StorkShipping
             int AnlikHedef = 0;                  //Per döngüsü içersindeki hedef belirleme için gerekli adresi tutuyor
             int toplamYol = 0;                   //Tüm şehirler gezildiğinde alınan mesafeyi içinde tutuyor
             bool[] hedefKontrol = new bool[10];  //Kullanıcının seçtiği şehirlerin kullanılma durumunu boolean bir şekilde saklıyor
-            KaynakAdres[0] = 41;                 //Program göreve Kocaeli'den başlıyacağı için deafult olarak 41 adresi veriliyor.
+            KaynakAdres[0] = 41;                 //Program göreve Kocaeli'den başlıyacağı için default olarak 41 adresi veriliyor.
 
             for (int i = 0; i < listBox1.Items.Count; i++) HedefAdres[i] = Convert.ToInt32(listBox1.Items[i].ToString().Substring(0, 2));
 
@@ -139,7 +139,6 @@ namespace StorkShipping
                     CizimYap(indisDizi);
 
                     islemTipi = 1;
-
                 }
                 else  // Sonraki gidilecek hedefi seçme işlemi için gerekli kısım
                 {
@@ -153,7 +152,6 @@ namespace StorkShipping
                             AnlikHedef = HedefAdres[i];
                         }
                     }
-
 
                     for (int i = 0; i < listBox1.Items.Count; i++)
                     {
@@ -208,7 +206,6 @@ namespace StorkShipping
             }
             else
             {
-
                 (Controls["button" + btnNo] as Button).BackColor = System.Drawing.SystemColors.ButtonHighlight;
                 (Controls["button" + btnNo] as Button).ForeColor = System.Drawing.SystemColors.ControlText;
 
@@ -219,7 +216,6 @@ namespace StorkShipping
                         listBox1.Items.Remove(btnNo.ToString() + " - " + Sehirler.SehirAd[btnNo]);
                     }
                 }
-
             }
             label8.Text = "Seçilen Şehir Sayısı = " + listBox1.Items.Count.ToString();
         }
@@ -253,7 +249,7 @@ namespace StorkShipping
             }
             else
             {
-                ListElemanEkleSil(Convert.ToInt32(clickedButton.Text.Substring(0, 2)), 1);
+              ListElemanEkleSil(Convert.ToInt32(clickedButton.Text.Substring(0, 2)), 1);
             }
         }
         private void SehirEkle_Click(object sender, EventArgs e)
@@ -292,7 +288,7 @@ namespace StorkShipping
         {
             FormSifirla();
         }
-        private void TextBox4_KeyPress(object sender, KeyPressEventArgs e)
+        private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (radioButton1.Checked == true)
             {
@@ -302,15 +298,18 @@ namespace StorkShipping
                 }
             }
         }
-        private void RadioButton1_CheckedChanged(object sender, EventArgs e)
+        private void RadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            textBox4.Clear();
-            textBox4.MaxLength = 2;
-        }
-        private void RadioButton2_CheckedChanged(object sender, EventArgs e)
-        {
-            textBox4.Clear();
-            textBox4.MaxLength = 20;
+            if (radioButton1.Checked == true)
+            {
+                textBox4.Clear();
+                textBox4.MaxLength = 2;
+            }
+            else
+            {
+                textBox4.Clear();
+                textBox4.MaxLength = 20;
+            }
         }
         private void Hesapla(object sender, EventArgs e)
         {
