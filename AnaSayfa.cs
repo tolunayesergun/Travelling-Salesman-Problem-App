@@ -47,8 +47,8 @@ namespace StorkShipping
         public void EnkisaYoluBul()
         {
             int[,] graf = Sehirler.graf;             //Sehirler classında ki oluşturduğumuz grafı, fonksiyonumuza aktarıyoruz
-            int[] HedefAdres = new int[10];          //Kullanıcının seçtiği şehirleri listboxtan çekip bu dizide saklıyorz                                 
-            int[] KaynakAdres = new int[11];         //Seçilen adresler arasından kaynak seçimini tutuyor
+            int[] HedefAdres = new int[11];          //Kullanıcının seçtiği şehirleri listboxtan çekip bu dizide saklıyorz                                 
+            int[] KaynakAdres = new int[12];         //Seçilen adresler arasından kaynak seçimini tutuyor
             int Tur = 1;                             //Yazdırma fonksiyonunun çalışma sayısını tutuyor
             int matrisBoyut = 81;                    //Komşuluk matrisinin boyutunu tutuyor
             int islemTipi = 1;                       //İşlem tipini tutuyor ( Yazdırma işlemi ve tespit işlemi için iki ayrı işlem yapılıyor)
