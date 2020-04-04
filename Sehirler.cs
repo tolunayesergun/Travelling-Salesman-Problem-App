@@ -26,9 +26,7 @@ namespace StorkShipping
             "Zonguldak", "Aksaray", "Bayburt", "Karaman", "Kirikkale", "Batman", "Sirnak", "Bartin", "Ardahan", "Igdir", "Yalova", "Karabuk",
             "Kilis", "Osmaniye", "Duzce" };
    
-
         public static int[,] graf=new int[81,81];
-
         public static int SehirPlakaBul(string Sehir)
         {
             int plaka=0;

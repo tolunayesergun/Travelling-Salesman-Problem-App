@@ -46,21 +46,23 @@ namespace StorkShipping
         }
         public void EnkisaYoluBul()
         {
-            int[,] graf = Sehirler.graf;         //Sehirler classında ki oluşturduğumuz grafı, fonksiyonumuza aktarıyoruz
-            int[] HedefAdres = new int[10];      //Kullanıcının seçtiği şehirleri listboxtan çekip bu dizide saklıyorz                                 
-            int[] KaynakAdres = new int[11];     //Seçilen adresler arasından kaynak seçimini tutuyor
-            int Tur = 1;                         //Yazdırma fonksiyonunun çalışma sayısını tutuyor
-            int matrisBoyut = 81;                //Komşuluk matrisinin boyutunu tutuyor
-            int islemTipi = 1;                   //İşlem tipini tutuyor ( Yazdırma işlemi ve tespit işlemi için iki ayrı işlem yapılıyor)
-            int hedef;                           //Son düğümün adresini tutuyor. işlem tipine göre alıcağı değer değişiyor  
-            int AnlikHedef = 0;                  //Per döngüsü içersindeki hedef belirleme için gerekli adresi tutuyor
-            int toplamYol = 0;                   //Tüm şehirler gezildiğinde alınan mesafeyi içinde tutuyor
-            bool[] hedefKontrol = new bool[10];  //Kullanıcının seçtiği şehirlerin kullanılma durumunu boolean bir şekilde saklıyor
-            KaynakAdres[0] = 41;                 //Program göreve Kocaeli'den başlıyacağı için default olarak 41 adresi veriliyor.
+            int[,] graf = Sehirler.graf;             //Sehirler classında ki oluşturduğumuz grafı, fonksiyonumuza aktarıyoruz
+            int[] HedefAdres = new int[10];          //Kullanıcının seçtiği şehirleri listboxtan çekip bu dizide saklıyorz                                 
+            int[] KaynakAdres = new int[11];         //Seçilen adresler arasından kaynak seçimini tutuyor
+            int Tur = 1;                             //Yazdırma fonksiyonunun çalışma sayısını tutuyor
+            int matrisBoyut = 81;                    //Komşuluk matrisinin boyutunu tutuyor
+            int islemTipi = 1;                       //İşlem tipini tutuyor ( Yazdırma işlemi ve tespit işlemi için iki ayrı işlem yapılıyor)
+            int hedef;                               //Son düğümün adresini tutuyor. işlem tipine göre alıcağı değer değişiyor  
+            int AnlikHedef = 0;                      //Per döngüsü içersindeki hedef belirleme için gerekli adresi tutuyor
+            int toplamYol = 0;                       //Tüm şehirler gezildiğinde alınan mesafeyi içinde tutuyor
+            int PerMax = listBox1.Items.Count;       //Gidilecek toplam adres sayısı
+            bool[] hedefKontrol = new bool[10];      //Kullanıcının seçtiği şehirlerin kullanılma durumunu boolean bir şekilde saklıyor
+            KaynakAdres[0] = 41;                     //Program göreve Kocaeli'den başlıyacağı için default olarak 41 adresi veriliyor.
+            if (checkBox1.Checked == true) PerMax++; //Eğer dönüş yolu işaretliyse döngü bir arttırlıyor
 
-            for (int i = 0; i < listBox1.Items.Count; i++) HedefAdres[i] = Convert.ToInt32(listBox1.Items[i].ToString().Substring(0, 2));
+            for (int i = 0; i < listBox1.Items.Count; i++) HedefAdres[i] = Convert.ToInt32(listBox1.Items[i].ToString().Substring(0, 2));        
 
-            for (int per = 0; per < listBox1.Items.Count; per++)
+            for (int per = 0; per < PerMax; per++)
             {
             islemYap:
                 int baslangic = KaynakAdres[per] - 1;
@@ -142,6 +144,9 @@ namespace StorkShipping
                 }
                 else  // Sonraki gidilecek hedefi seçme işlemi için gerekli kısım
                 {
+                    if (per == listBox1.Items.Count) AnlikHedef = KaynakAdres[0];
+                    else
+                    {
                     int Tempkontrol = AnlikHedef;
                     int kontrolTut = 0;
 
@@ -160,7 +165,6 @@ namespace StorkShipping
                         {
                             AnlikHedef = HedefAdres[i];
                             kontrolTut = i;
-
                         }
                     }
 
@@ -172,11 +176,11 @@ namespace StorkShipping
                             {
                                 AnlikHedef = HedefAdres[j];
                                 kontrolTut = j;
-
                             }
                         }
                     }
                     hedefKontrol[kontrolTut] = true;
+                    }
                     islemTipi = 0;
                     goto islemYap;
                 }
