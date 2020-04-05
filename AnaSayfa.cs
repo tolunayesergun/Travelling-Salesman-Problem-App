@@ -78,7 +78,7 @@ namespace StorkShipping
                 for (int i = 0; i < matrisBoyut; i++) uzaklik[i] = int.MaxValue;
                 uzaklik[baslangic] = 0;
 
-                while (true)
+                for (int R=0;R<matrisBoyut;R++)
                 {
                     int enYakinDugum = 0;
                     int enAzUzaklik = int.MaxValue;
