@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StorkShipping
+﻿namespace StorkShipping
 {
-    class Sehirler
+    internal class Sehirler
     {
         public static string[] SehirAd = { " ","Adana", "Adıyaman", "Afyon", "Ağrı", "Amasya", "Ankara", "Antalya", "Artvin", "Aydın",
             "Balıkesir", "Bilecik", "Bingöl", "Bitlis", "Bolu", "Burdur", "Bursa", "Çanakkale", "Çankırı", "Çorum", "Denizli",
@@ -25,11 +19,12 @@ namespace StorkShipping
             "Sakarya", "Samsun", "Siirt", "Sinop", "Sivas", "Tekirdag", "Tokat", "Trabzon", "Tunceli", "Sanliurfa", "Usak", "Van", "Yozgat",
             "Zonguldak", "Aksaray", "Bayburt", "Karaman", "Kirikkale", "Batman", "Sirnak", "Bartin", "Ardahan", "Igdir", "Yalova", "Karabuk",
             "Kilis", "Osmaniye", "Duzce" };
-   
-        public static int[,] graf=new int[81,81];
+
+        public static int[,] graf = new int[81, 81];
+
         public static int SehirPlakaBul(string Sehir)
         {
-            int plaka=0;
+            int plaka = 0;
 
             for (int i = 0; i < SehirAd.Length; i++)
             {
@@ -38,10 +33,11 @@ namespace StorkShipping
                     plaka = i;
                 }
             }
-            if (plaka == 0)plaka=FindCityName(Sehir);
+            if (plaka == 0) plaka = FindCityName(Sehir);
 
             return plaka;
         }
+
         public static int FindCityName(string Sehir)
         {
             int plaka = 0;

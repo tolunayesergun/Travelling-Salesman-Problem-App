@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using System.IO;
 
 namespace StorkShipping
 {
     public partial class AnaSayfa : Form
     {
-        readonly Bitmap cizimAlani;  // Harita görselini çizim alanı olarak belirlememiz için gerekli global değişken
+        private readonly Bitmap cizimAlani;  // Harita görselini çizim alanı olarak belirlememiz için gerekli global değişken
 
         public AnaSayfa()
         {
@@ -17,6 +17,7 @@ namespace StorkShipping
             cizimAlani = new Bitmap(pictureBox1.Size.Width, pictureBox1.Size.Height);
             pictureBox1.Image = cizimAlani;
         }
+
         public void CizimYap(int[] adresler)
         {
             Pen Kalem = new Pen(System.Drawing.Color.Red, 5);
@@ -32,27 +33,29 @@ namespace StorkShipping
             pictureBox1.Image = cizimAlani;
             grafik.Dispose();
         }
+
         public void FormSifirla()
         {
             Graphics grafik;
             grafik = Graphics.FromImage(cizimAlani);
             grafik.Clear(Color.Transparent);
+
             Refresh();
             label6.Visible = true;
             label7.Visible = true;
             label3.Visible = true;
             listBox2.Items.Clear();
-
         }
+
         public void EnkisaYoluBul()
         {
             int[,] graf = Sehirler.graf;             //Sehirler classında ki oluşturduğumuz grafı, fonksiyonumuza aktarıyoruz
-            int[] HedefAdres = new int[11];          //Kullanıcının seçtiği şehirleri listboxtan çekip bu dizide saklıyorz                                 
+            int[] HedefAdres = new int[11];          //Kullanıcının seçtiği şehirleri listboxtan çekip bu dizide saklıyorz
             int[] KaynakAdres = new int[12];         //Seçilen adresler arasından kaynak seçimini tutuyor
             int Tur = 1;                             //Yazdırma fonksiyonunun çalışma sayısını tutuyor
             int matrisBoyut = 81;                    //Komşuluk matrisinin boyutunu tutuyor
             int islemTipi = 1;                       //İşlem tipini tutuyor ( Yazdırma işlemi ve tespit işlemi için iki ayrı işlem yapılıyor)
-            int hedef;                               //Son düğümün adresini tutuyor. işlem tipine göre alıcağı değer değişiyor  
+            int hedef;                               //Son düğümün adresini tutuyor. işlem tipine göre alıcağı değer değişiyor
             int AnlikHedef = 0;                      //Per döngüsü içersindeki hedef belirleme için gerekli adresi tutuyor
             int toplamYol = 0;                       //Tüm şehirler gezildiğinde alınan mesafeyi içinde tutuyor
             int PerMax = listBox1.Items.Count;       //Gidilecek toplam adres sayısı
@@ -60,7 +63,7 @@ namespace StorkShipping
             KaynakAdres[0] = 41;                     //Program göreve Kocaeli'den başlıyacağı için default olarak 41 adresi veriliyor.
             if (checkBox1.Checked == true) PerMax++; //Eğer dönüş yolu işaretliyse döngü bir arttırlıyor
 
-            for (int i = 0; i < listBox1.Items.Count; i++) HedefAdres[i] = Convert.ToInt32(listBox1.Items[i].ToString().Substring(0, 2));        
+            for (int i = 0; i < listBox1.Items.Count; i++) HedefAdres[i] = Convert.ToInt32(listBox1.Items[i].ToString().Substring(0, 2));
 
             for (int per = 0; per < PerMax; per++)
             {
@@ -78,14 +81,13 @@ namespace StorkShipping
                 for (int i = 0; i < matrisBoyut; i++) uzaklik[i] = int.MaxValue;
                 uzaklik[baslangic] = 0;
 
-                for (int R=0;R<matrisBoyut;R++)
+                for (int R = 0; R < matrisBoyut; R++)
                 {
                     int enYakinDugum = 0;
                     int enAzUzaklik = int.MaxValue;
                     int enYakinDugumeOlanUzaklik;
                     int sonrakiDugumeOlanUzaklik;
                     int toplamUzaklik;
-
 
                     for (int i = 0; i < matrisBoyut; i++)
                     {
@@ -147,45 +149,45 @@ namespace StorkShipping
                     if (per == listBox1.Items.Count) AnlikHedef = KaynakAdres[0];
                     else
                     {
-                    int Tempkontrol = AnlikHedef;
-                    int kontrolTut = 0;
+                        int Tempkontrol = AnlikHedef;
+                        int kontrolTut = 0;
 
-                    for (int i = 0; i < listBox1.Items.Count; i++)
-                    {
-                        if (hedefKontrol[i] == false)
+                        for (int i = 0; i < listBox1.Items.Count; i++)
                         {
-                            AnlikHedef = HedefAdres[i];
-                        }
-                    }
-
-                    for (int i = 0; i < listBox1.Items.Count; i++)
-                    {
-
-                        if (uzaklik[HedefAdres[i] - 1] <= uzaklik[AnlikHedef - 1] && hedefKontrol[i] == false)
-                        {
-                            AnlikHedef = HedefAdres[i];
-                            kontrolTut = i;
-                        }
-                    }
-
-                    if (Tempkontrol == AnlikHedef)
-                    {
-                        for (int j = 0; j < listBox1.Items.Count; j++)
-                        {
-                            if (hedefKontrol[j] == false)
+                            if (hedefKontrol[i] == false)
                             {
-                                AnlikHedef = HedefAdres[j];
-                                kontrolTut = j;
+                                AnlikHedef = HedefAdres[i];
                             }
                         }
-                    }
-                    hedefKontrol[kontrolTut] = true;
+
+                        for (int i = 0; i < listBox1.Items.Count; i++)
+                        {
+                            if (uzaklik[HedefAdres[i] - 1] <= uzaklik[AnlikHedef - 1] && hedefKontrol[i] == false)
+                            {
+                                AnlikHedef = HedefAdres[i];
+                                kontrolTut = i;
+                            }
+                        }
+
+                        if (Tempkontrol == AnlikHedef)
+                        {
+                            for (int j = 0; j < listBox1.Items.Count; j++)
+                            {
+                                if (hedefKontrol[j] == false)
+                                {
+                                    AnlikHedef = HedefAdres[j];
+                                    kontrolTut = j;
+                                }
+                            }
+                        }
+                        hedefKontrol[kontrolTut] = true;
                     }
                     islemTipi = 0;
                     goto islemYap;
                 }
             }
         }
+
         public void ListElemanEkleSil(int btnNo, int islemTipi)
         {
             if (islemTipi == 0)
@@ -223,6 +225,7 @@ namespace StorkShipping
             }
             label8.Text = "Seçilen Şehir Sayısı = " + listBox1.Items.Count.ToString();
         }
+
         public void GrafOlustur()
         {
             try
@@ -244,18 +247,20 @@ namespace StorkShipping
                 MessageBox.Show("problem"); // tekrar yüklemeyi sağla.
             }
         }
+
         private void Btn_Click(object sender, EventArgs e)
         {
             Button clickedButton = (Button)sender;
             if (clickedButton.BackColor == System.Drawing.SystemColors.ButtonHighlight)
             {
-              ListElemanEkleSil(Convert.ToInt32(clickedButton.Text.Substring(0, 2)), 0);
+                ListElemanEkleSil(Convert.ToInt32(clickedButton.Text.Substring(0, 2)), 0);
             }
             else
             {
-              ListElemanEkleSil(Convert.ToInt32(clickedButton.Text.Substring(0, 2)), 1);
+                ListElemanEkleSil(Convert.ToInt32(clickedButton.Text.Substring(0, 2)), 1);
             }
         }
+
         private void SehirEkle_Click(object sender, EventArgs e)
         {
             int sehirplaka = 0;
@@ -267,6 +272,7 @@ namespace StorkShipping
             ListElemanEkleSil(sehirplaka, 0);
             textBox4.Clear();
         }
+
         private void SilToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (listBox1.SelectedIndex == -1)
@@ -277,7 +283,8 @@ namespace StorkShipping
             {
                 ListElemanEkleSil(Convert.ToInt32(listBox1.SelectedItem.ToString().Substring(0, 2)), 1);
             }
-        }    
+        }
+
         private void AnaSayfa_Load(object sender, EventArgs e)
         {
             panel1.BackColor = Color.FromArgb(20, Color.White);
@@ -288,10 +295,12 @@ namespace StorkShipping
             label3.Visible = false;
             GrafOlustur();
         }
+
         private void Yazdir(object sender, EventArgs e)
         {
             FormSifirla();
         }
+
         private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (radioButton1.Checked == true)
@@ -302,6 +311,7 @@ namespace StorkShipping
                 }
             }
         }
+
         private void RadioButton_CheckedChanged(object sender, EventArgs e)
         {
             if (radioButton1.Checked == true)
@@ -315,11 +325,12 @@ namespace StorkShipping
                 textBox4.MaxLength = 20;
             }
         }
+
         private void Hesapla(object sender, EventArgs e)
         {
-            FormSifirla();        
-            if (listBox1.Items.Count != 0)EnkisaYoluBul();
-            else MessageBox.Show("Güzargah Oluşturulabilmesi için, en az bir hedef şehir seçilmelidir.");    
+            FormSifirla();
+            if (listBox1.Items.Count != 0) EnkisaYoluBul();
+            else MessageBox.Show("Güzargah Oluşturulabilmesi için, en az bir hedef şehir seçilmelidir.");
         }
     }
 }
