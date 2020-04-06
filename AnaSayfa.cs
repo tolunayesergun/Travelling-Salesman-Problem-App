@@ -18,15 +18,26 @@ namespace StorkShipping
             pictureBox1.Image = cizimAlani;
         }
 
-        public void CizimYap(int[] adresler)
+        public void CizimYap(int[] adresler,int adet)
         {
-            Pen Kalem = new Pen(System.Drawing.Color.Red, 5);
+            adet = adet + 1;
+            var pens = new Dictionary<string, Pen>();
+            Pen Kalem1 = new Pen(System.Drawing.Color.Red, 5);
+            Pen Kalem2 = new Pen(System.Drawing.Color.Blue, 5);
+            Pen Kalem3 = new Pen(System.Drawing.Color.Green, 5);
+            Pen Kalem4 = new Pen(System.Drawing.Color.Yellow, 5);
+            pens.Add("Kalem1", Kalem1);
+            pens.Add("Kalem2", Kalem2);
+            pens.Add("Kalem3", Kalem3);
+            pens.Add("Kalem4", Kalem4);
+
+
             Graphics grafik;
             grafik = Graphics.FromImage(cizimAlani);
 
             for (int i = 0; i < adresler.Length - 1; i++)
             {
-                grafik.DrawLine(Kalem, (Controls["button" + (adresler[i] + 1)] as Button).Location.X + 15, (Controls["button" + (adresler[i] + 1)] as Button).Location.Y + 15,
+                grafik.DrawLine(pens.FirstOrDefault(x => x.Key == "Kalem"+adet.ToString()).Value, (Controls["button" + (adresler[i] + 1)] as Button).Location.X + 15, (Controls["button" + (adresler[i] + 1)] as Button).Location.Y + 15,
                 (Controls["button" + (adresler[i + 1] + 1)] as Button).Location.X + 15, (Controls["button" + (adresler[i + 1] + 1)] as Button).Location.Y + 15);
             }
 
@@ -49,141 +60,164 @@ namespace StorkShipping
 
         public void EnkisaYoluBul()
         {
-            int[,] graf = Sehirler.graf;             //Sehirler classında ki oluşturduğumuz grafı, fonksiyonumuza aktarıyoruz
-            int[] HedefAdres = new int[11];          //Kullanıcının seçtiği şehirleri listboxtan çekip bu dizide saklıyorz
-            int[] KaynakAdres = new int[12];         //Seçilen adresler arasından kaynak seçimini tutuyor
-            int Tur = 1;                             //Yazdırma fonksiyonunun çalışma sayısını tutuyor
-            int matrisBoyut = 81;                    //Komşuluk matrisinin boyutunu tutuyor
-            int islemTipi = 1;                       //İşlem tipini tutuyor ( Yazdırma işlemi ve tespit işlemi için iki ayrı işlem yapılıyor)
-            int hedef;                               //Son düğümün adresini tutuyor. işlem tipine göre alıcağı değer değişiyor
-            int AnlikHedef = 0;                      //Per döngüsü içersindeki hedef belirleme için gerekli adresi tutuyor
-            int toplamYol = 0;                       //Tüm şehirler gezildiğinde alınan mesafeyi içinde tutuyor
-            int PerMax = listBox1.Items.Count;       //Gidilecek toplam adres sayısı
-            bool[] hedefKontrol = new bool[10];      //Kullanıcının seçtiği şehirlerin kullanılma durumunu boolean bir şekilde saklıyor
-            KaynakAdres[0] = 41;                     //Program göreve Kocaeli'den başlıyacağı için default olarak 41 adresi veriliyor.
-            if (checkBox1.Checked == true) PerMax++; //Eğer dönüş yolu işaretliyse döngü bir arttırlıyor
-
-            for (int i = 0; i < listBox1.Items.Count; i++) HedefAdres[i] = Convert.ToInt32(listBox1.Items[i].ToString().Substring(0, 2));
-
-            for (int per = 0; per < PerMax; per++)
+            for (int rpt = 0; rpt < 3; rpt++)
             {
-            islemYap:
-                int baslangic = KaynakAdres[per] - 1;
+                int[,] graf = Sehirler.graf;             //Sehirler classında ki oluşturduğumuz grafı, fonksiyonumuza aktarıyoruz
+                int[] HedefAdres = new int[11];          //Kullanıcının seçtiği şehirleri listboxtan çekip bu dizide saklıyorz
+                int[] KaynakAdres = new int[12];         //Seçilen adresler arasından kaynak seçimini tutuyor
+                int Tur = 1;                             //Yazdırma fonksiyonunun çalışma sayısını tutuyor
+                int matrisBoyut = 81;                    //Komşuluk matrisinin boyutunu tutuyor
+                int islemTipi = 1;                       //İşlem tipini tutuyor ( Yazdırma işlemi ve tespit işlemi için iki ayrı işlem yapılıyor)
+                int hedef;                               //Son düğümün adresini tutuyor. işlem tipine göre alıcağı değer değişiyor
+                int AnlikHedef = 0;                      //Per döngüsü içersindeki hedef belirleme için gerekli adresi tutuyor
+                int toplamYol = 0;                       //Tüm şehirler gezildiğinde alınan mesafeyi içinde tutuyor
+                int PerMax = listBox1.Items.Count;       //Gidilecek toplam adres sayısı
+                int listboxNo=2;
+                int limit=1;
+                bool[] hedefKontrol = new bool[10];      //Kullanıcının seçtiği şehirlerin kullanılma durumunu boolean bir şekilde saklıyor
+                KaynakAdres[0] = 41;                     //Program göreve Kocaeli'den başlıyacağı için default olarak 41 adresi veriliyor.
+                if (checkBox1.Checked == true) PerMax++; //Eğer dönüş yolu işaretliyse döngü bir arttırlıyor
 
-                if (islemTipi == 1) hedef = HedefAdres[per] - 1;
-                else hedef = AnlikHedef - 1;
-                LinkedList<int> yol = new LinkedList<int>();
-                int? dugum = hedef;
-                int?[] oncekiDugum = new int?[matrisBoyut];
-                int[] uzaklik = new int[matrisBoyut];
-                bool[] gezmeKontrol = new bool[matrisBoyut];
+                for (int i = 0; i < listBox1.Items.Count; i++) HedefAdres[i] = Convert.ToInt32(listBox1.Items[i].ToString().Substring(0, 2));
 
-                for (int i = 0; i < matrisBoyut; i++) uzaklik[i] = int.MaxValue;
-                uzaklik[baslangic] = 0;
-
-                for (int R = 0; R < matrisBoyut; R++)
+                for (int per = 0; per < PerMax; per++)
                 {
-                    int enYakinDugum = 0;
-                    int enAzUzaklik = int.MaxValue;
-                    int enYakinDugumeOlanUzaklik;
-                    int sonrakiDugumeOlanUzaklik;
-                    int toplamUzaklik;
+                islemYap:
+                    int baslangic = KaynakAdres[per] - 1;
 
-                    for (int i = 0; i < matrisBoyut; i++)
-                    {
-                        if (gezmeKontrol[i] == false && uzaklik[i] < enAzUzaklik)
-                        {
-                            enYakinDugum = i;
-                            enAzUzaklik = uzaklik[i];
-                        }
+                    if (islemTipi == 1) hedef = HedefAdres[per] - 1;
+                    else hedef = AnlikHedef - 1;
+                    LinkedList<int> yol = new LinkedList<int>();
+                    int? dugum = hedef;
+                    int?[] oncekiDugum = new int?[matrisBoyut];
+                    int[] uzaklik = new int[matrisBoyut];
+                    bool[] gezmeKontrol = new bool[matrisBoyut];
+
+                    for (int i = limit; i < listBox2.Items.Count-1; i++)
+                    {                  
+                        gezmeKontrol[Convert.ToInt32(listBox2.Items[i].ToString().Substring(listBox2.Items[i].ToString().Length - 4, 3)) - 1] = true;
                     }
-                    if (enAzUzaklik == int.MaxValue) break;
-                    gezmeKontrol[enYakinDugum] = true;
-
-                    for (int i = 0; i < matrisBoyut; i++)
+                    for (int i = 0; i < listBox1.Items.Count; i++)
                     {
-                        if (graf[enYakinDugum, i] > 0)
-                        {
-                            sonrakiDugumeOlanUzaklik = graf[enYakinDugum, i];
-                            enYakinDugumeOlanUzaklik = uzaklik[enYakinDugum];
-                            toplamUzaklik = enYakinDugumeOlanUzaklik + sonrakiDugumeOlanUzaklik;
+                        gezmeKontrol[Convert.ToInt32(listBox1.Items[i].ToString().Substring(0, 2)) - 1] = false;
+                    }
 
-                            if (toplamUzaklik < uzaklik[i])
+                    for (int i = 0; i < matrisBoyut; i++) uzaklik[i] = int.MaxValue;
+                    uzaklik[baslangic] = 0;
+
+                    for (int R = 0; R < matrisBoyut; R++)
+                    {
+                        int enYakinDugum = 0;
+                        int enAzUzaklik = int.MaxValue;
+                        int enYakinDugumeOlanUzaklik;
+                        int sonrakiDugumeOlanUzaklik;
+                        int toplamUzaklik;
+
+                        for (int i = 0; i < matrisBoyut; i++)
+                        {
+                            if (gezmeKontrol[i] == false && uzaklik[i] < enAzUzaklik)
                             {
-                                uzaklik[i] = toplamUzaklik;
-                                oncekiDugum[i] = enYakinDugum;
+                                enYakinDugum = i;
+                                enAzUzaklik = uzaklik[i];
                             }
                         }
-                    }
-                }
-                if (islemTipi == 0)  // Çizim işlemi için gerekli hesaplamalar yapılan kısım
-                {
-                    while (dugum != null)
-                    {
-                        yol.AddFirst(dugum.Value);
-                        dugum = oncekiDugum[dugum.Value];
-                    }
+                        if (enAzUzaklik == int.MaxValue) break;
+                        gezmeKontrol[enYakinDugum] = true;
 
-                    KaynakAdres[Tur] = AnlikHedef;
-                    Tur++;
-
-                    int[] indisDizi = new int[yol.Count];
-                    indisDizi[0] = KaynakAdres[Tur - 2] - 1;
-                    if (Tur == 2) listBox2.Items.Add("1) Kocaeli [ 41 ]");
-
-                    for (int i = 1; i < yol.Count; i++)
-                    {
-                        indisDizi[i] = yol.ToList()[i];
-                        toplamYol += graf[yol.ToList()[i - 1], yol.ToList()[i]];
-                        listBox2.Items.Add((listBox2.Items.Count + 1) + ") " + Sehirler.SehirAd[yol.ToList()[i] + 1] + " [ " + Convert.ToString(yol.ToList()[i] + 1) + " ]");
-                    }
-
-                    label7.Text = Convert.ToString(toplamYol) + " KM";
-                    label6.Text = listBox2.Items.Count.ToString();
-                    CizimYap(indisDizi);
-
-                    islemTipi = 1;
-                }
-                else  // Sonraki gidilecek hedefi seçme işlemi için gerekli kısım
-                {
-                    if (per == listBox1.Items.Count) AnlikHedef = KaynakAdres[0];
-                    else
-                    {
-                        int Tempkontrol = AnlikHedef;
-                        int kontrolTut = 0;
-
-                        for (int i = 0; i < listBox1.Items.Count; i++)
+                        for (int i = 0; i < matrisBoyut; i++)
                         {
-                            if (hedefKontrol[i] == false)
+                            if (graf[enYakinDugum, i] > 0)
                             {
-                                AnlikHedef = HedefAdres[i];
-                            }
-                        }
+                                sonrakiDugumeOlanUzaklik = graf[enYakinDugum, i];
+                                enYakinDugumeOlanUzaklik = uzaklik[enYakinDugum];
+                                toplamUzaklik = enYakinDugumeOlanUzaklik + sonrakiDugumeOlanUzaklik;
 
-                        for (int i = 0; i < listBox1.Items.Count; i++)
-                        {
-                            if (uzaklik[HedefAdres[i] - 1] <= uzaklik[AnlikHedef - 1] && hedefKontrol[i] == false)
-                            {
-                                AnlikHedef = HedefAdres[i];
-                                kontrolTut = i;
-                            }
-                        }
-
-                        if (Tempkontrol == AnlikHedef)
-                        {
-                            for (int j = 0; j < listBox1.Items.Count; j++)
-                            {
-                                if (hedefKontrol[j] == false)
+                                if (toplamUzaklik < uzaklik[i])
                                 {
-                                    AnlikHedef = HedefAdres[j];
-                                    kontrolTut = j;
+                                    uzaklik[i] = toplamUzaklik;
+                                    oncekiDugum[i] = enYakinDugum;
                                 }
                             }
                         }
-                        hedefKontrol[kontrolTut] = true;
                     }
-                    islemTipi = 0;
-                    goto islemYap;
+                    if (islemTipi == 0)  // Çizim işlemi için gerekli hesaplamalar yapılan kısım
+                    {
+                        while (dugum != null)
+                        {
+                            yol.AddFirst(dugum.Value);
+                            dugum = oncekiDugum[dugum.Value];
+                        }
+
+
+                        MessageBox.Show(listBox2.Items.Count.ToString());
+                        if(yol.Count==1)
+                        {
+                            if (limit == listBox2.Items.Count) break;
+                            limit++;
+                            goto islemYap;
+                        }
+
+                        KaynakAdres[Tur] = AnlikHedef;
+                        Tur++;
+                        int[] indisDizi = new int[yol.Count];
+                        indisDizi[0] = KaynakAdres[Tur - 2] - 1;
+                        if (Tur == 2) listBox2.Items.Add("1) Kocaeli [ 41 ]");
+
+                        for (int i = 1; i < yol.Count; i++)
+                        {
+                            indisDizi[i] = yol.ToList()[i];
+                            toplamYol += graf[yol.ToList()[i - 1], yol.ToList()[i]];
+                            listBox2.Items.Add(listboxNo + ") " + Sehirler.SehirAd[yol.ToList()[i] + 1] + " [ " + Convert.ToString(yol.ToList()[i] + 1) + " ]");
+                            listboxNo++;
+                        }
+                
+                        label7.Text = Convert.ToString(toplamYol) + " KM";
+                        label6.Text = listBox2.Items.Count.ToString();
+                        CizimYap(indisDizi,rpt);
+
+                        islemTipi = 1;
+                    }
+                    else  // Sonraki gidilecek hedefi seçme işlemi için gerekli kısım
+                    {
+                        if (per == listBox1.Items.Count) AnlikHedef = KaynakAdres[0];
+                        else
+                        {
+                            int Tempkontrol = AnlikHedef;
+                            int kontrolTut = 0;
+
+                            for (int i = 0; i < listBox1.Items.Count; i++)
+                            {
+                                if (hedefKontrol[i] == false)
+                                {
+                                    AnlikHedef = HedefAdres[i];
+                                }
+                            }
+
+                            for (int i = 0; i < listBox1.Items.Count; i++)
+                            {
+                                if (uzaklik[HedefAdres[i] - 1] <= uzaklik[AnlikHedef - 1] && hedefKontrol[i] == false)
+                                {
+                                    AnlikHedef = HedefAdres[i];
+                                    kontrolTut = i;
+                                }
+                            }
+
+                            if (Tempkontrol == AnlikHedef)
+                            {
+                                for (int j = 0; j < listBox1.Items.Count; j++)
+                                {
+                                    if (hedefKontrol[j] == false)
+                                    {
+                                        AnlikHedef = HedefAdres[j];
+                                        kontrolTut = j;
+                                    }
+                                }
+                            }
+                            hedefKontrol[kontrolTut] = true;
+                        }
+                        islemTipi = 0;
+                        goto islemYap;
+                    }
                 }
             }
         }
