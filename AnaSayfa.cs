@@ -60,6 +60,8 @@ namespace StorkShipping
 
         public void EnkisaYoluBul()
         {
+            int listbox2count = listBox2.Items.Count;
+
             for (int rpt = 0; rpt < 3; rpt++)
             {
                 int[,] graf = Sehirler.graf;             //Sehirler classında ki oluşturduğumuz grafı, fonksiyonumuza aktarıyoruz
@@ -93,9 +95,10 @@ namespace StorkShipping
                     int[] uzaklik = new int[matrisBoyut];
                     bool[] gezmeKontrol = new bool[matrisBoyut];
 
-                    for (int i = limit; i < listBox2.Items.Count-1; i++)
+                    int k = limit;
+                    for (k = limit; k < listbox2count - 1; k++)
                     {                  
-                        gezmeKontrol[Convert.ToInt32(listBox2.Items[i].ToString().Substring(listBox2.Items[i].ToString().Length - 4, 3)) - 1] = true;
+                        gezmeKontrol[Convert.ToInt32(listBox2.Items[k].ToString().Substring(listBox2.Items[k].ToString().Length - 4, 3)) - 1] = true;
                     }
                     for (int i = 0; i < listBox1.Items.Count; i++)
                     {
@@ -149,10 +152,10 @@ namespace StorkShipping
                         }
 
 
-                        MessageBox.Show(listBox2.Items.Count.ToString());
+                        MessageBox.Show(listbox2count.ToString());
                         if(yol.Count==1)
                         {
-                            if (limit == listBox2.Items.Count) break;
+                            if (limit == listbox2count) break;
                             limit++;
                             goto islemYap;
                         }
@@ -161,7 +164,7 @@ namespace StorkShipping
                         Tur++;
                         int[] indisDizi = new int[yol.Count];
                         indisDizi[0] = KaynakAdres[Tur - 2] - 1;
-                        if (Tur == 2) listBox2.Items.Add("1) Kocaeli [ 41 ]");
+                        if (Tur == 2) { listBox2.Items.Add("1) Kocaeli [ 41 ]"); listbox2count = listBox2.Items.Count; }
 
                         for (int i = 1; i < yol.Count; i++)
                         {
@@ -169,10 +172,11 @@ namespace StorkShipping
                             toplamYol += graf[yol.ToList()[i - 1], yol.ToList()[i]];
                             listBox2.Items.Add(listboxNo + ") " + Sehirler.SehirAd[yol.ToList()[i] + 1] + " [ " + Convert.ToString(yol.ToList()[i] + 1) + " ]");
                             listboxNo++;
+                            listbox2count = listBox2.Items.Count;
                         }
                 
                         label7.Text = Convert.ToString(toplamYol) + " KM";
-                        label6.Text = listBox2.Items.Count.ToString();
+                        label6.Text = listbox2count.ToString();
                         CizimYap(indisDizi,rpt);
 
                         islemTipi = 1;
