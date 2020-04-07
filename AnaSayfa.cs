@@ -10,6 +10,8 @@ namespace StorkShipping
     public partial class AnaSayfa : Form
     {
         private readonly Bitmap cizimAlani;  // Harita görselini çizim alanı olarak belirlememiz için gerekli global değişken
+        private readonly int[,] listAdresleri = new int[5, 81];
+        private readonly int[] toplamYol = new int[5];
 
         public AnaSayfa()
         {
@@ -18,27 +20,34 @@ namespace StorkShipping
             pictureBox1.Image = cizimAlani;
         }
 
-        public void CizimYap(int[] adresler,int adet)
+        public void CizimYap(int yazilacakYol, int adet)
         {
-            adet = adet + 1;
+            int diziUzunlugu = 0;
             var pens = new Dictionary<string, Pen>();
             Pen Kalem1 = new Pen(System.Drawing.Color.Red, 5);
             Pen Kalem2 = new Pen(System.Drawing.Color.Blue, 5);
             Pen Kalem3 = new Pen(System.Drawing.Color.Green, 5);
-            Pen Kalem4 = new Pen(System.Drawing.Color.Yellow, 5);
+            Pen Kalem4 = new Pen(System.Drawing.Color.Black, 5);
+            Pen Kalem5 = new Pen(System.Drawing.Color.Purple, 5);
             pens.Add("Kalem1", Kalem1);
             pens.Add("Kalem2", Kalem2);
             pens.Add("Kalem3", Kalem3);
             pens.Add("Kalem4", Kalem4);
+            pens.Add("Kalem5", Kalem5);
 
+            for (int i = 0; i < 81; i++)
+            {
+                if (listAdresleri[yazilacakYol, i] != 0) diziUzunlugu++;
+                else break;
+            }
 
             Graphics grafik;
             grafik = Graphics.FromImage(cizimAlani);
-
-            for (int i = 0; i < adresler.Length - 1; i++)
+            int kayma = 15 + (adet * 2);
+            for (int i = 0; i < diziUzunlugu - 1; i++)
             {
-                grafik.DrawLine(pens.FirstOrDefault(x => x.Key == "Kalem"+adet.ToString()).Value, (Controls["button" + (adresler[i] + 1)] as Button).Location.X + 15, (Controls["button" + (adresler[i] + 1)] as Button).Location.Y + 15,
-                (Controls["button" + (adresler[i + 1] + 1)] as Button).Location.X + 15, (Controls["button" + (adresler[i + 1] + 1)] as Button).Location.Y + 15);
+                grafik.DrawLine(pens.FirstOrDefault(x => x.Key == "Kalem" + adet.ToString()).Value, (Controls["button" + listAdresleri[yazilacakYol, i]] as Button).Location.X + kayma, (Controls["button" + listAdresleri[yazilacakYol, i]] as Button).Location.Y + kayma,
+                (Controls["button" + listAdresleri[yazilacakYol, i + 1]] as Button).Location.X + kayma, (Controls["button" + listAdresleri[yazilacakYol, i + 1]] as Button).Location.Y + kayma);
             }
 
             pictureBox1.Image = cizimAlani;
@@ -60,10 +69,9 @@ namespace StorkShipping
 
         public void EnkisaYoluBul()
         {
-            int listbox2count = listBox2.Items.Count;
-
-            for (int rpt = 0; rpt < 3; rpt++)
+            for (int rpt = 0; rpt < 5; rpt++)
             {
+                int lsSay = 0;
                 int[,] graf = Sehirler.graf;             //Sehirler classında ki oluşturduğumuz grafı, fonksiyonumuza aktarıyoruz
                 int[] HedefAdres = new int[11];          //Kullanıcının seçtiği şehirleri listboxtan çekip bu dizide saklıyorz
                 int[] KaynakAdres = new int[12];         //Seçilen adresler arasından kaynak seçimini tutuyor
@@ -72,10 +80,8 @@ namespace StorkShipping
                 int islemTipi = 1;                       //İşlem tipini tutuyor ( Yazdırma işlemi ve tespit işlemi için iki ayrı işlem yapılıyor)
                 int hedef;                               //Son düğümün adresini tutuyor. işlem tipine göre alıcağı değer değişiyor
                 int AnlikHedef = 0;                      //Per döngüsü içersindeki hedef belirleme için gerekli adresi tutuyor
-                int toplamYol = 0;                       //Tüm şehirler gezildiğinde alınan mesafeyi içinde tutuyor
                 int PerMax = listBox1.Items.Count;       //Gidilecek toplam adres sayısı
-                int listboxNo=2;
-                int limit=1;
+
                 bool[] hedefKontrol = new bool[10];      //Kullanıcının seçtiği şehirlerin kullanılma durumunu boolean bir şekilde saklıyor
                 KaynakAdres[0] = 41;                     //Program göreve Kocaeli'den başlıyacağı için default olarak 41 adresi veriliyor.
                 if (checkBox1.Checked == true) PerMax++; //Eğer dönüş yolu işaretliyse döngü bir arttırlıyor
@@ -84,6 +90,7 @@ namespace StorkShipping
 
                 for (int per = 0; per < PerMax; per++)
                 {
+                    int limit = 1;
                 islemYap:
                     int baslangic = KaynakAdres[per] - 1;
 
@@ -95,16 +102,21 @@ namespace StorkShipping
                     int[] uzaklik = new int[matrisBoyut];
                     bool[] gezmeKontrol = new bool[matrisBoyut];
 
-                    int k = limit;
-                    for (k = limit; k < listbox2count - 1; k++)
-                    {                  
-                        gezmeKontrol[Convert.ToInt32(listBox2.Items[k].ToString().Substring(listBox2.Items[k].ToString().Length - 4, 3)) - 1] = true;
-                    }
-                    for (int i = 0; i < listBox1.Items.Count; i++)
+                    if (rpt > 0 && per <= listBox1.Items.Count)
                     {
-                        gezmeKontrol[Convert.ToInt32(listBox1.Items[i].ToString().Substring(0, 2)) - 1] = false;
-                    }
+                        for (int k = limit; k < 80; k++)
+                        {
+                            if (listAdresleri[0, k] != 0) gezmeKontrol[listAdresleri[0, k] - 1] = true;
+                            if (listAdresleri[1, k] != 0) gezmeKontrol[listAdresleri[1, k] - 1] = true;
+                            if (listAdresleri[2, k] != 0) gezmeKontrol[listAdresleri[2, k] - 1] = true;
+                            if (listAdresleri[3, k] != 0) gezmeKontrol[listAdresleri[3, k] - 1] = true;
+                        }
 
+                        for (int i = 0; i < listBox1.Items.Count; i++)
+                        {
+                            gezmeKontrol[Convert.ToInt32(listBox1.Items[i].ToString().Substring(0, 2)) - 1] = false;
+                        }
+                    }
                     for (int i = 0; i < matrisBoyut; i++) uzaklik[i] = int.MaxValue;
                     uzaklik[baslangic] = 0;
 
@@ -151,33 +163,30 @@ namespace StorkShipping
                             dugum = oncekiDugum[dugum.Value];
                         }
 
-
-                        MessageBox.Show(listbox2count.ToString());
-                        if(yol.Count==1)
+                        if (yol.Count == 1)
                         {
-                            if (limit == listbox2count) break;
-                            limit++;
-                            goto islemYap;
+                            if (limit == 81) { }
+                            else
+                            {
+                                limit++;
+                                goto islemYap;
+                            }
                         }
 
                         KaynakAdres[Tur] = AnlikHedef;
                         Tur++;
-                        int[] indisDizi = new int[yol.Count];
-                        indisDizi[0] = KaynakAdres[Tur - 2] - 1;
-                        if (Tur == 2) { listBox2.Items.Add("1) Kocaeli [ 41 ]"); listbox2count = listBox2.Items.Count; }
 
+                        if (Tur == 2)
+                        {
+                            listAdresleri[rpt, lsSay] = KaynakAdres[Tur - 2];
+                            lsSay++;
+                        }
                         for (int i = 1; i < yol.Count; i++)
                         {
-                            indisDizi[i] = yol.ToList()[i];
-                            toplamYol += graf[yol.ToList()[i - 1], yol.ToList()[i]];
-                            listBox2.Items.Add(listboxNo + ") " + Sehirler.SehirAd[yol.ToList()[i] + 1] + " [ " + Convert.ToString(yol.ToList()[i] + 1) + " ]");
-                            listboxNo++;
-                            listbox2count = listBox2.Items.Count;
+                            listAdresleri[rpt, lsSay] = yol.ToList()[i] + 1;
+                            lsSay++;
+                            toplamYol[rpt] += graf[yol.ToList()[i - 1], yol.ToList()[i]];
                         }
-                
-                        label7.Text = Convert.ToString(toplamYol) + " KM";
-                        label6.Text = listbox2count.ToString();
-                        CizimYap(indisDizi,rpt);
 
                         islemTipi = 1;
                     }
@@ -223,6 +232,60 @@ namespace StorkShipping
                         goto islemYap;
                     }
                 }
+            }
+            AlternatifOlustur();
+        }
+
+        public void AlternatifOlustur()
+        {
+            int Sehirler;
+
+            listBox3.Items.Add("");
+            for (int i = 0; i < 5; i++)
+            {
+                bool[] esitKontrol = new bool[5];
+                for (int k = 0; k < i; k++)
+                {
+                    if (i != k && toplamYol[i] == toplamYol[k]) esitKontrol[i] = true;
+                }
+                if (esitKontrol[i] == false)
+                {
+                    Sehirler = 0;
+                    for (int j = 0; j < 81; j++) if (listAdresleri[i, j] != 0) Sehirler++;
+                    listBox3.Items.Add((listBox3.Items.Count) + ".yol " + Sehirler + " şehir, uzunluk = " + toplamYol[i] + " KM                 " + i);
+                }
+            }
+            listBox3.Items[0] = "  Tüm Alternatif Yolları Göster" + " ( " + (listBox3.Items.Count - 1) + " )                          6";
+            listBox3.SelectedIndex = 0;
+        }
+
+        public void YolYazdir(int yazilacakYol)
+        {
+            if (yazilacakYol == 6)
+            {
+                for (int adet = 1; adet < listBox3.Items.Count; adet++)
+                {
+                    int yaz = Convert.ToInt32(listBox3.Items[adet].ToString().Substring(listBox3.Items[adet].ToString().Length - 1, 1));
+                    for (int i = 0; i < 81; i++)
+                    {
+                        if (listAdresleri[yaz, i] != 0)
+                            listBox2.Items.Add((i + 1) + ") " + Sehirler.SehirAd[listAdresleri[yaz, i]] + " [ " + Convert.ToString(listAdresleri[yaz, i]) + " ]");
+                    }
+                    listBox2.Items.Add("");
+                    CizimYap(yaz, adet);
+                }
+            }
+            else
+            {
+                FormSifirla();
+                int yaz = yazilacakYol;
+                for (int i = 0; i < 81; i++)
+                {
+                    if (listAdresleri[yaz, i] != 0)
+                        listBox2.Items.Add((i + 1) + ") " + Sehirler.SehirAd[listAdresleri[yaz, i]] + " [ " + Convert.ToString(listAdresleri[yaz, i]) + " ]");
+                }
+                listBox2.Items.Add("");
+                CizimYap(yaz, (yaz + 1));
             }
         }
 
@@ -336,7 +399,21 @@ namespace StorkShipping
 
         private void Yazdir(object sender, EventArgs e)
         {
-            FormSifirla();
+            StreamWriter Yaz = new StreamWriter(Application.StartupPath + "\\sonuc.txt");
+
+            for (int jk = 0; jk < 5; jk++)
+            {
+                //if (listBox2.Items[jk].ToString().Substring(0, 2) == "1)") Yaz.WriteLine("");
+                //Yaz.Write(listBox2.Items[jk]);
+                for (int kj = 0; kj < 56; kj++)
+
+                    Yaz.Write(listAdresleri[jk, kj] + "  ");
+                Yaz.WriteLine("");
+            }
+
+            Yaz.Flush();
+            Yaz.Close();
+            Yaz.Dispose();
         }
 
         private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -366,9 +443,29 @@ namespace StorkShipping
 
         private void Hesapla(object sender, EventArgs e)
         {
+            listBox3.Items.Clear();
+            Array.Clear(listAdresleri, 0, listAdresleri.Length);
+            Array.Clear(toplamYol, 0, toplamYol.Length);
             FormSifirla();
             if (listBox1.Items.Count != 0) EnkisaYoluBul();
             else MessageBox.Show("Güzargah Oluşturulabilmesi için, en az bir hedef şehir seçilmelidir.");
+        }
+
+        private void ListBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int Secim;
+            Secim = Convert.ToInt32(listBox3.SelectedItem.ToString().Substring(listBox3.SelectedItem.ToString().Length - 1, 1));
+            YolYazdir(Secim);
+        }
+
+        private void Button82_Click(object sender, EventArgs e)
+        {
+            if (listBox3.SelectedIndex != 0) listBox3.SelectedIndex--;
+        }
+
+        private void Button83_Click(object sender, EventArgs e)
+        {
+            if (listBox3.SelectedIndex < listBox3.Items.Count - 1) listBox3.SelectedIndex++;
         }
     }
 }
