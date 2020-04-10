@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace StorkShipping
     public partial class AnaSayfa : Form
     {
         private readonly Bitmap cizimAlani;  // Harita görselini çizim alanı olarak belirlememiz için gerekli global değişken
-        private readonly int[,] listAdresleri = new int[5, 81];
+        private readonly int[,] listAdresleri = new int[5, 200];
         private readonly int[] toplamYol = new int[5];
 
         public AnaSayfa()
@@ -61,9 +62,6 @@ namespace StorkShipping
             grafik.Clear(Color.Transparent);
 
             Refresh();
-            label6.Visible = true;
-            label7.Visible = true;
-            label3.Visible = true;
             listBox2.Items.Clear();
         }
 
@@ -81,7 +79,6 @@ namespace StorkShipping
                 int hedef;                               //Son düğümün adresini tutuyor. işlem tipine göre alıcağı değer değişiyor
                 int AnlikHedef = 0;                      //Per döngüsü içersindeki hedef belirleme için gerekli adresi tutuyor
                 int PerMax = listBox1.Items.Count;       //Gidilecek toplam adres sayısı
-
                 bool[] hedefKontrol = new bool[10];      //Kullanıcının seçtiği şehirlerin kullanılma durumunu boolean bir şekilde saklıyor
                 KaynakAdres[0] = 41;                     //Program göreve Kocaeli'den başlıyacağı için default olarak 41 adresi veriliyor.
                 if (checkBox1.Checked == true) PerMax++; //Eğer dönüş yolu işaretliyse döngü bir arttırlıyor
@@ -239,7 +236,7 @@ namespace StorkShipping
         public void AlternatifOlustur()
         {
             int Sehirler;
-
+            Sirala();
             listBox3.Items.Add("");
             for (int i = 0; i < 5; i++)
             {
@@ -256,6 +253,7 @@ namespace StorkShipping
                 }
             }
             listBox3.Items[0] = "  Tüm Alternatif Yolları Göster" + " ( " + (listBox3.Items.Count - 1) + " )                          6";
+
             listBox3.SelectedIndex = 0;
         }
 
@@ -272,6 +270,7 @@ namespace StorkShipping
                             listBox2.Items.Add((i + 1) + ") " + Sehirler.SehirAd[listAdresleri[yaz, i]] + " [ " + Convert.ToString(listAdresleri[yaz, i]) + " ]");
                     }
                     listBox2.Items.Add("");
+                    label3.Text = "Güzargah Seçiniz";
                     CizimYap(yaz, adet);
                 }
             }
@@ -285,6 +284,7 @@ namespace StorkShipping
                         listBox2.Items.Add((i + 1) + ") " + Sehirler.SehirAd[listAdresleri[yaz, i]] + " [ " + Convert.ToString(listAdresleri[yaz, i]) + " ]");
                 }
                 listBox2.Items.Add("");
+                label3.Text = (listBox2.Items.Count - 1).ToString() + " Şehir " + toplamYol[yaz] + " KM";
                 CizimYap(yaz, (yaz + 1));
             }
         }
@@ -329,10 +329,13 @@ namespace StorkShipping
 
         public void GrafOlustur()
         {
+        Tekrar:
             try
             {
                 string stun;
-                using (StreamReader dizin = new StreamReader(Application.StartupPath + "\\SehirVeri.txt"))
+                string dizinYolu = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Stork Shipping";
+                if ((File.Exists(dizinYolu + "\\Sehir Verileri.txt")) == false) VeriOlustur.VeriDosyasiOlustur();
+                using (StreamReader dizin = new StreamReader(dizinYolu + "\\Sehir Verileri.txt"))
 
                     while ((stun = dizin.ReadLine()) != null)
                     {
@@ -343,9 +346,108 @@ namespace StorkShipping
                         }
                     }
             }
-            catch
+            catch (FormatException)
             {
-                MessageBox.Show("problem"); // tekrar yüklemeyi sağla.
+                VeriOlustur.VeriDosyasiOlustur();
+                goto Tekrar;
+            }
+        }
+
+        public void Sirala()
+        {
+            for (int L = 0; L < 4; L++)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    if (toplamYol[i] > toplamYol[i + 1])
+                    {
+                        int[] temp = new int[81];
+                        int tmp = toplamYol[i];
+                        for (int j = 0; j < 81; j++)
+                        {
+                            temp[j] = listAdresleri[i, j];
+                            listAdresleri[i, j] = listAdresleri[(i + 1), j];
+                            listAdresleri[(i + 1), j] = temp[j];
+                        }
+                        toplamYol[i] = toplamYol[i + 1];
+                        toplamYol[i + 1] = tmp;
+                    }
+                }
+            }
+        }
+
+        public void Hesapla()
+        {
+            listBox3.Items.Clear();
+            Array.Clear(listAdresleri, 0, listAdresleri.Length);
+            Array.Clear(toplamYol, 0, toplamYol.Length);
+            FormSifirla();
+            if (listBox1.Items.Count != 0) EnkisaYoluBul();
+            else MessageBox.Show("Güzargah Oluşturulabilmesi için, en az bir hedef şehir seçilmelidir.");
+        }
+
+        public void Yazdir(string KayitYolu)
+        {
+            string kayitAdresi;
+            string dizinYolu = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Stork Shipping";
+            if (Directory.Exists(dizinYolu) == false) Directory.CreateDirectory(dizinYolu);
+            if (KayitYolu == "") kayitAdresi = dizinYolu + "\\Arama Kayıtları.txt";
+            else kayitAdresi = KayitYolu;
+            bool kullanilmaDurumu = false;
+            StreamWriter Yaz = new StreamWriter(kayitAdresi, true);
+
+            {
+                Yaz.WriteLine("");
+                Yaz.WriteLine(" Dağıtım Merkezi = Kocaeli [41]");
+                Yaz.Write(" Gidilmesi Planlanan Şehirler = ");
+                for (int i = 0; i < listBox1.Items.Count; i++)
+                {
+                    Yaz.Write(Sehirler.SehirAd[Convert.ToInt32(listBox1.Items[i].ToString().Substring(0, 2))] + "[" + "{0,2}" + "]", Convert.ToInt32(listBox1.Items[i].ToString().Substring(0, 2)));
+                    if (i < listBox1.Items.Count - 1) Yaz.Write(" -> ");
+                }
+                Yaz.WriteLine("\n");
+
+                for (int i = 1; i < (listBox3.Items.Count); i++)
+                {
+                    Yaz.Write("{0,26}", i + ".Güzargah");
+                }
+                Yaz.WriteLine("\n");
+                for (int kj = 0; kj < 81; kj++)
+                {
+                    for (int i = 1; i < (listBox3.Items.Count); i++)
+                    {
+                        if (listAdresleri[Convert.ToInt32(listBox3.Items[i].ToString().Substring(listBox3.Items[i].ToString().Length - 1, 1)), kj] != 0)
+                        {
+                            Yaz.Write("  " + "{0,20}" + " [" + "{1,2}" + "]", Sehirler.SehirAd[listAdresleri[Convert.ToInt32(listBox3.Items[i].ToString().Substring(listBox3.Items[i].ToString().Length - 1, 1)), kj]], listAdresleri[Convert.ToInt32(listBox3.Items[i].ToString().Substring(listBox3.Items[i].ToString().Length - 1, 1)), kj]);
+                        }
+                        else if (kullanilmaDurumu == true)
+                        {
+                            Yaz.Write("                           ");
+                        }
+                    }
+                    kullanilmaDurumu = false;
+                    for (int i = 1; i < (listBox3.Items.Count); i++)
+                    {
+                        if ((listAdresleri[(Convert.ToInt32(listBox3.Items[i].ToString().Substring(listBox3.Items[i].ToString().Length - 1, 1))), kj]) != 0)
+                        {
+                            Yaz.Write("\n");
+                            kullanilmaDurumu = true;
+                            break;
+                        }
+                    }
+                }
+                Yaz.Write("\n");
+
+                for (int i = 1; i < (listBox3.Items.Count); i++)
+                {
+                    Yaz.Write("{0,27}", (toplamYol[Convert.ToInt32(listBox3.Items[i].ToString().Substring(listBox3.Items[i].ToString().Length - 1, 1))]) + " Kilometre");
+                }
+                Yaz.WriteLine("\n");
+                for (int i = 0; i < 150; i++) Yaz.Write("-");
+                Yaz.WriteLine("");
+                Yaz.Flush();
+                Yaz.Close();
+                Yaz.Dispose();
             }
         }
 
@@ -388,32 +490,8 @@ namespace StorkShipping
 
         private void AnaSayfa_Load(object sender, EventArgs e)
         {
-            panel1.BackColor = Color.FromArgb(20, Color.White);
-            panel2.BackColor = Color.FromArgb(20, Color.White);
-            radioButton1.Checked = true;
-            label7.Visible = false;
-            label6.Visible = false;
-            label3.Visible = false;
             GrafOlustur();
-        }
-
-        private void Yazdir(object sender, EventArgs e)
-        {
-            StreamWriter Yaz = new StreamWriter(Application.StartupPath + "\\sonuc.txt");
-
-            for (int jk = 0; jk < 5; jk++)
-            {
-                //if (listBox2.Items[jk].ToString().Substring(0, 2) == "1)") Yaz.WriteLine("");
-                //Yaz.Write(listBox2.Items[jk]);
-                for (int kj = 0; kj < 56; kj++)
-
-                    Yaz.Write(listAdresleri[jk, kj] + "  ");
-                Yaz.WriteLine("");
-            }
-
-            Yaz.Flush();
-            Yaz.Close();
-            Yaz.Dispose();
+            radioButton1.Checked = true;
         }
 
         private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -441,16 +519,6 @@ namespace StorkShipping
             }
         }
 
-        private void Hesapla(object sender, EventArgs e)
-        {
-            listBox3.Items.Clear();
-            Array.Clear(listAdresleri, 0, listAdresleri.Length);
-            Array.Clear(toplamYol, 0, toplamYol.Length);
-            FormSifirla();
-            if (listBox1.Items.Count != 0) EnkisaYoluBul();
-            else MessageBox.Show("Güzargah Oluşturulabilmesi için, en az bir hedef şehir seçilmelidir.");
-        }
-
         private void ListBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
             int Secim;
@@ -466,6 +534,60 @@ namespace StorkShipping
         private void Button83_Click(object sender, EventArgs e)
         {
             if (listBox3.SelectedIndex < listBox3.Items.Count - 1) listBox3.SelectedIndex++;
+        }
+
+        private void CheckBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (listBox1.Items.Count > 0) { Hesapla(); Yazdir(""); }
+        }
+
+        private void BtnHesapla(object sender, EventArgs e)
+        {
+            Hesapla();
+            Yazdir("");
+        }
+
+        private void BtnYazdir(object sender, EventArgs e)
+        {
+            if (listBox1.Items.Count != 0 && listBox3.Items.Count != 0)
+            {
+                string KayitYolu;
+                SaveFileDialog ofd = new SaveFileDialog()
+                {
+                    Filter = "Text Files | *.txt",
+                    DefaultExt = "txt",
+                    FileName = "Kocaeli-" + (listBox1.Items[listBox1.Items.Count - 1].ToString().Substring(4, (listBox1.Items[listBox1.Items.Count - 1].ToString().Length - 4))).Replace(" ", "")
+                };
+
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    KayitYolu = Path.GetFullPath(ofd.FileName);
+                    Yazdir(KayitYolu);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Guzargahı kaydedebilmeniz için öncelikle hesaplanması gereklidir.");
+            }
+        }
+
+        private void DyolClick(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked == true) checkBox1.Checked = false; else checkBox1.Checked = true;
+        }
+
+        private void BtnTxtAc(object sender, EventArgs e)
+        {
+            string dizinYolu = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Stork Shipping";
+            if (Directory.Exists(dizinYolu) == false) Directory.CreateDirectory(dizinYolu);
+            StreamWriter Yaz = new StreamWriter(dizinYolu + "\\Arama Kayıtları.txt", true);
+            Yaz.Write("");
+            Yaz.Flush();
+            Yaz.Close();
+            Yaz.Dispose();
+            var process = Process.Start(dizinYolu + "\\Arama Kayıtları.txt");
+            process.WaitForInputIdle();
+            SendKeys.Send("^{END}");
         }
     }
 }

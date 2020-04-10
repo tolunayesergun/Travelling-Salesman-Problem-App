@@ -28,7 +28,7 @@
 
             for (int i = 0; i < SehirAd.Length; i++)
             {
-                if (SehirAd[i].ToUpper() == Sehir.ToUpper())
+                if (SehirAd[i].ToLower() == Sehir.ToLower())
                 {
                     plaka = i;
                 }

@@ -115,19 +115,15 @@
             this.btnHesapla = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.listBox3 = new System.Windows.Forms.ListBox();
             this.button83 = new System.Windows.Forms.Button();
             this.button82 = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.btnYazdir = new System.Windows.Forms.Button();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
             this.SehirEkle = new System.Windows.Forms.Button();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
@@ -138,11 +134,11 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.silToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button84 = new System.Windows.Forms.Button();
+            this.button85 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -1132,15 +1128,15 @@
             // btnHesapla
             // 
             this.btnHesapla.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.btnHesapla.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnHesapla.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.btnHesapla.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.btnHesapla.Location = new System.Drawing.Point(1263, 689);
+            this.btnHesapla.Location = new System.Drawing.Point(1253, 734);
             this.btnHesapla.Name = "btnHesapla";
-            this.btnHesapla.Size = new System.Drawing.Size(95, 78);
+            this.btnHesapla.Size = new System.Drawing.Size(102, 50);
             this.btnHesapla.TabIndex = 86;
             this.btnHesapla.Text = "Hesapla";
             this.btnHesapla.UseVisualStyleBackColor = false;
-            this.btnHesapla.Click += new System.EventHandler(this.Hesapla);
+            this.btnHesapla.Click += new System.EventHandler(this.BtnHesapla);
             // 
             // pictureBox2
             // 
@@ -1161,29 +1157,12 @@
             this.pictureBox3.TabIndex = 90;
             this.pictureBox3.TabStop = false;
             // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.SystemColors.HotTrack;
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.listBox3);
-            this.panel1.Controls.Add(this.button83);
-            this.panel1.Controls.Add(this.button82);
-            this.panel1.Controls.Add(this.label7);
-            this.panel1.Controls.Add(this.label6);
-            this.panel1.Controls.Add(this.listBox2);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Location = new System.Drawing.Point(793, 674);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(446, 115);
-            this.panel1.TabIndex = 91;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label1.Location = new System.Drawing.Point(78, 1);
+            this.label1.Location = new System.Drawing.Point(845, 673);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(114, 16);
             this.label1.TabIndex = 100;
@@ -1192,13 +1171,12 @@
             // listBox3
             // 
             this.listBox3.BackColor = System.Drawing.Color.Azure;
-            this.listBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.listBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.listBox3.FormattingEnabled = true;
             this.listBox3.ItemHeight = 15;
-            this.listBox3.Location = new System.Drawing.Point(44, 20);
+            this.listBox3.Location = new System.Drawing.Point(811, 691);
             this.listBox3.Name = "listBox3";
-            this.listBox3.Size = new System.Drawing.Size(202, 90);
+            this.listBox3.Size = new System.Drawing.Size(202, 94);
             this.listBox3.TabIndex = 99;
             this.listBox3.SelectedIndexChanged += new System.EventHandler(this.ListBox3_SelectedIndexChanged);
             // 
@@ -1207,7 +1185,7 @@
             this.button83.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.button83.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.button83.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.button83.Location = new System.Drawing.Point(12, 68);
+            this.button83.Location = new System.Drawing.Point(779, 742);
             this.button83.Name = "button83";
             this.button83.Size = new System.Drawing.Size(25, 26);
             this.button83.TabIndex = 98;
@@ -1220,7 +1198,7 @@
             this.button82.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.button82.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.button82.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.button82.Location = new System.Drawing.Point(12, 36);
+            this.button82.Location = new System.Drawing.Point(779, 710);
             this.button82.Name = "button82";
             this.button82.Size = new System.Drawing.Size(25, 26);
             this.button82.TabIndex = 93;
@@ -1228,38 +1206,15 @@
             this.button82.UseVisualStyleBackColor = false;
             this.button82.Click += new System.EventHandler(this.Button82_Click);
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label7.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label7.Location = new System.Drawing.Point(351, 98);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(28, 15);
-            this.label7.TabIndex = 97;
-            this.label7.Text = "KM";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label6.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label6.Location = new System.Drawing.Point(289, 98);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(23, 15);
-            this.label6.TabIndex = 96;
-            this.label6.Text = "00";
-            // 
             // listBox2
             // 
             this.listBox2.BackColor = System.Drawing.Color.Azure;
-            this.listBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.listBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.listBox2.FormattingEnabled = true;
             this.listBox2.ItemHeight = 15;
-            this.listBox2.Location = new System.Drawing.Point(275, 20);
+            this.listBox2.Location = new System.Drawing.Point(1042, 691);
             this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(147, 75);
+            this.listBox2.Size = new System.Drawing.Size(147, 79);
             this.listBox2.TabIndex = 95;
             // 
             // label3
@@ -1267,18 +1222,18 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label3.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label3.Location = new System.Drawing.Point(308, 98);
+            this.label3.Location = new System.Drawing.Point(1049, 771);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 15);
+            this.label3.Size = new System.Drawing.Size(120, 15);
             this.label3.TabIndex = 89;
-            this.label3.Text = "Şehir";
+            this.label3.Text = "Güzargah Seçiniz";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label2.Location = new System.Drawing.Point(315, 1);
+            this.label2.Location = new System.Drawing.Point(1082, 673);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(74, 16);
             this.label2.TabIndex = 87;
@@ -1287,50 +1242,36 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.checkBox1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.checkBox1.Location = new System.Drawing.Point(1261, 772);
+            this.checkBox1.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.checkBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.checkBox1.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.checkBox1.Location = new System.Drawing.Point(1261, 696);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(106, 20);
+            this.checkBox1.Size = new System.Drawing.Size(91, 17);
             this.checkBox1.TabIndex = 101;
             this.checkBox1.Text = "Dönüş Yolu";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.UseVisualStyleBackColor = false;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.CheckBox1_CheckedChanged);
             // 
             // btnYazdir
             // 
             this.btnYazdir.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.btnYazdir.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnYazdir.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.btnYazdir.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.btnYazdir.Location = new System.Drawing.Point(1379, 690);
+            this.btnYazdir.Location = new System.Drawing.Point(1364, 734);
             this.btnYazdir.Name = "btnYazdir";
-            this.btnYazdir.Size = new System.Drawing.Size(95, 78);
+            this.btnYazdir.Size = new System.Drawing.Size(102, 50);
             this.btnYazdir.TabIndex = 92;
-            this.btnYazdir.Text = "Yazdır";
+            this.btnYazdir.Text = "Farklı Kaydet";
             this.btnYazdir.UseVisualStyleBackColor = false;
-            this.btnYazdir.Click += new System.EventHandler(this.Yazdir);
-            // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.SystemColors.HotTrack;
-            this.panel2.Controls.Add(this.label8);
-            this.panel2.Controls.Add(this.SehirEkle);
-            this.panel2.Controls.Add(this.radioButton2);
-            this.panel2.Controls.Add(this.radioButton1);
-            this.panel2.Controls.Add(this.label5);
-            this.panel2.Controls.Add(this.textBox4);
-            this.panel2.Controls.Add(this.label4);
-            this.panel2.Controls.Add(this.listBox1);
-            this.panel2.Location = new System.Drawing.Point(375, 676);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(381, 113);
-            this.panel2.TabIndex = 92;
+            this.btnYazdir.Click += new System.EventHandler(this.BtnYazdir);
             // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label8.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label8.Location = new System.Drawing.Point(8, 96);
+            this.label8.Location = new System.Drawing.Point(377, 771);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(159, 15);
             this.label8.TabIndex = 98;
@@ -1341,7 +1282,7 @@
             this.SehirEkle.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.SehirEkle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.SehirEkle.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.SehirEkle.Location = new System.Drawing.Point(251, 78);
+            this.SehirEkle.Location = new System.Drawing.Point(612, 758);
             this.SehirEkle.Name = "SehirEkle";
             this.SehirEkle.Size = new System.Drawing.Size(57, 22);
             this.SehirEkle.TabIndex = 94;
@@ -1353,11 +1294,10 @@
             // 
             this.radioButton2.AutoSize = true;
             this.radioButton2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.radioButton2.Location = new System.Drawing.Point(204, 35);
+            this.radioButton2.Location = new System.Drawing.Point(565, 715);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(79, 17);
             this.radioButton2.TabIndex = 93;
-            this.radioButton2.TabStop = true;
             this.radioButton2.Text = "Şehir Ad İle";
             this.radioButton2.UseVisualStyleBackColor = true;
             this.radioButton2.CheckedChanged += new System.EventHandler(this.RadioButton_CheckedChanged);
@@ -1366,11 +1306,10 @@
             // 
             this.radioButton1.AutoSize = true;
             this.radioButton1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.radioButton1.Location = new System.Drawing.Point(287, 35);
+            this.radioButton1.Location = new System.Drawing.Point(648, 715);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(66, 17);
             this.radioButton1.TabIndex = 92;
-            this.radioButton1.TabStop = true;
             this.radioButton1.Text = "Plaka İle";
             this.radioButton1.UseVisualStyleBackColor = true;
             this.radioButton1.CheckedChanged += new System.EventHandler(this.RadioButton_CheckedChanged);
@@ -1380,7 +1319,7 @@
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label5.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label5.Location = new System.Drawing.Point(221, 9);
+            this.label5.Location = new System.Drawing.Point(582, 689);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(113, 16);
             this.label5.TabIndex = 91;
@@ -1391,7 +1330,7 @@
             this.textBox4.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox4.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.textBox4.Location = new System.Drawing.Point(204, 58);
+            this.textBox4.Location = new System.Drawing.Point(565, 738);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(149, 15);
             this.textBox4.TabIndex = 90;
@@ -1403,7 +1342,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label4.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label4.Location = new System.Drawing.Point(28, 3);
+            this.label4.Location = new System.Drawing.Point(397, 673);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(118, 16);
             this.label4.TabIndex = 90;
@@ -1412,14 +1351,13 @@
             // listBox1
             // 
             this.listBox1.BackColor = System.Drawing.Color.Azure;
-            this.listBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.listBox1.ContextMenuStrip = this.contextMenuStrip1;
             this.listBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 15;
-            this.listBox1.Location = new System.Drawing.Point(11, 21);
+            this.listBox1.Location = new System.Drawing.Point(380, 691);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(153, 75);
+            this.listBox1.Size = new System.Drawing.Size(153, 79);
             this.listBox1.TabIndex = 0;
             // 
             // contextMenuStrip1
@@ -1436,33 +1374,73 @@
             this.silToolStripMenuItem.Text = "Sil";
             this.silToolStripMenuItem.Click += new System.EventHandler(this.SilToolStripMenuItem_Click);
             // 
+            // button84
+            // 
+            this.button84.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.button84.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.button84.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.button84.Location = new System.Drawing.Point(1364, 678);
+            this.button84.Name = "button84";
+            this.button84.Size = new System.Drawing.Size(102, 50);
+            this.button84.TabIndex = 102;
+            this.button84.Text = "Arama Kayıtlarını Aç";
+            this.button84.UseVisualStyleBackColor = false;
+            this.button84.Click += new System.EventHandler(this.BtnTxtAc);
+            // 
+            // button85
+            // 
+            this.button85.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.button85.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.button85.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.button85.Location = new System.Drawing.Point(1253, 678);
+            this.button85.Name = "button85";
+            this.button85.Size = new System.Drawing.Size(102, 50);
+            this.button85.TabIndex = 103;
+            this.button85.UseVisualStyleBackColor = false;
+            this.button85.Click += new System.EventHandler(this.DyolClick);
+            // 
             // AnaSayfa
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Highlight;
             this.ClientSize = new System.Drawing.Size(1499, 793);
-            this.Controls.Add(this.btnHesapla);
+            this.Controls.Add(this.button84);
             this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.btnYazdir);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBox2);
+            this.Controls.Add(this.btnHesapla);
             this.Controls.Add(this.pictureBox3);
+            this.Controls.Add(this.btnYazdir);
             this.Controls.Add(this.button81);
+            this.Controls.Add(this.button85);
             this.Controls.Add(this.button80);
+            this.Controls.Add(this.listBox3);
             this.Controls.Add(this.button79);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.button78);
+            this.Controls.Add(this.button83);
             this.Controls.Add(this.button77);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.button82);
             this.Controls.Add(this.button76);
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.button75);
+            this.Controls.Add(this.listBox2);
             this.Controls.Add(this.button74);
+            this.Controls.Add(this.SehirEkle);
             this.Controls.Add(this.button73);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.button72);
+            this.Controls.Add(this.textBox4);
             this.Controls.Add(this.button71);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.button70);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.button69);
+            this.Controls.Add(this.radioButton2);
             this.Controls.Add(this.button68);
+            this.Controls.Add(this.radioButton1);
             this.Controls.Add(this.button67);
             this.Controls.Add(this.button66);
             this.Controls.Add(this.button65);
@@ -1543,10 +1521,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1640,11 +1614,9 @@
         private System.Windows.Forms.Button btnHesapla;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnYazdir;
-        private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.RadioButton radioButton2;
@@ -1655,14 +1627,14 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem silToolStripMenuItem;
         private System.Windows.Forms.ListBox listBox2;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button button83;
         private System.Windows.Forms.Button button82;
         private System.Windows.Forms.ListBox listBox3;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Button button84;
+        private System.Windows.Forms.Button button85;
     }
 }
 
