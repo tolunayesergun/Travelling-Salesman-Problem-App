@@ -9,7 +9,7 @@ namespace StorkShipping
         {
             string dizinYolu = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Stork Shipping";
             if (Directory.Exists(dizinYolu) == false) Directory.CreateDirectory(dizinYolu);
-            StreamWriter Yaz = new StreamWriter(dizinYolu + "\\Sehir Verileri.txt");
+            StreamWriter Yaz = new StreamWriter(dizinYolu + "\\Şehir Verileri.txt");
 
             Yaz.Write(
                 "1,Adana,Hatay-191,Osmaniye-87,Kahramanmaras-192,Kayseri-335,Nigde-207,Mersin-69\n" +

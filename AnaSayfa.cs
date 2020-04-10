@@ -334,8 +334,8 @@ namespace StorkShipping
             {
                 string stun;
                 string dizinYolu = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Stork Shipping";
-                if ((File.Exists(dizinYolu + "\\Sehir Verileri.txt")) == false) VeriOlustur.VeriDosyasiOlustur();
-                using (StreamReader dizin = new StreamReader(dizinYolu + "\\Sehir Verileri.txt"))
+                if ((File.Exists(dizinYolu + "\\Şehir Verileri.txt")) == false) VeriOlustur.VeriDosyasiOlustur();
+                using (StreamReader dizin = new StreamReader(dizinYolu + "\\Şehir Verileri.txt"))
 
                     while ((stun = dizin.ReadLine()) != null)
                     {
