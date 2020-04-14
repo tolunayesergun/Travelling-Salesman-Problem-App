@@ -346,10 +346,23 @@ namespace StorkShipping
                         }
                     }
             }
-            catch (FormatException)
+            catch (Exception ex)
             {
-                VeriOlustur.VeriDosyasiOlustur();
-                goto Tekrar;
+                if (ex is FormatException || ex is IndexOutOfRangeException)
+                {
+                    DialogResult dialog;
+                    dialog = MessageBox.Show("Şehir verileri.txt Hatalı. Kurulum ayarlarına geri dönmek ister misiniz ?", "HATA", MessageBoxButtons.YesNo);
+                    if (dialog == DialogResult.Yes)
+                    {
+                        VeriOlustur.VeriDosyasiOlustur();
+                        goto Tekrar;
+                    }
+                    else
+                    {
+                        this.Close();
+                    }
+                }
+               
             }
         }
 
