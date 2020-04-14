@@ -82,7 +82,6 @@ namespace StorkShipping
                 bool[] hedefKontrol = new bool[10];      //Kullanıcının seçtiği şehirlerin kullanılma durumunu boolean bir şekilde saklıyor
                 KaynakAdres[0] = 41;                     //Program göreve Kocaeli'den başlıyacağı için default olarak 41 adresi veriliyor.
                 if (checkBox1.Checked == true) PerMax++; //Eğer dönüş yolu işaretliyse döngü bir arttırlıyor
-
                 for (int i = 0; i < listBox1.Items.Count; i++) HedefAdres[i] = Convert.ToInt32(listBox1.Items[i].ToString().Substring(0, 2));
 
                 for (int per = 0; per < PerMax; per++)
